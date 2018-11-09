@@ -1,7 +1,7 @@
 /**
  * 
  */
-package astaire;
+
 
 /**
  * A controller for the dance show programme generator system.

@@ -1,8 +1,10 @@
 /**
  * 
  */
-package astaire;
 
+
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 /**
@@ -12,14 +14,20 @@ import java.util.Scanner;
  * @version  08/11/2018
  */
 public class TUI {
+	
+	public static void main(String[] args) throws FileNotFoundException {
+		TUI tui = new TUI(new DanceController());
+	}  
 
 	private Controller controller;  
 	private Scanner stdIn;
+	private Reader reader;
 	
-	public TUI(Controller controller) {
+	public TUI(DanceController controller) throws FileNotFoundException {
 		
 		this.controller = controller;
-		
+		reader = new Reader(new File("/files/danceShowData_danceGroups.csv"));
+		reader.readFile();
 		// Creates a Scanner object for obtaining user input
 		stdIn = new Scanner(System.in);
 		

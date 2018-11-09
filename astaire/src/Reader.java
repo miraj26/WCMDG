@@ -1,11 +1,14 @@
+import java.io.File;
 import java.io.File.*;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 /**
  * This class reads the .csv file and stores it into an array.
  * @author Miraj Shah, Jacob Williams, Devin Shingadia
  *
  */
-public class Reader {
+public class Reader{
 
 	/**
 	 * Holds an instance of the scanner object.
@@ -22,14 +25,20 @@ public class Reader {
 	
 	public Reader(File file) {
 		this.file = file;
-		scanner = new Scanner(file);
 		dancers = new ArrayList<ArrayList<String>>();
-	}
-	/**
-	 * 
-	 */
-	public void readFile() {
-		scanner.useDelimiter("\n");
+		System.out.println(file.toString());
 	}
 	
+	/**
+	 * @throws FileNotFoundException 
+	 * 
+	 */
+	public void readFile() throws FileNotFoundException {
+		scanner = new Scanner(file);
+		scanner.useDelimiter("\n");
+		while(scanner.hasNextLine()) {
+			String line = scanner.nextLine();
+			System.out.println(line);
+		}
+	}
 }
