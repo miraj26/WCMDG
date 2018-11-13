@@ -3,6 +3,7 @@ import java.io.File.*;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 /**
  * This class reads the .csv file and stores it into an array.
@@ -24,7 +25,7 @@ public class Reader{
 	 */
 	private ArrayList<ArrayList<String>> dancers;
 	
-	//private HashMap<String, IndexedList>;
+	private HashMap<String, IndexedList<String>> dances;
 	
 	public Reader(String pathname) {
 		file = new File(pathname);
