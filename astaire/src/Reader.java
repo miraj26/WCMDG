@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.File.*;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Scanner;
 /**
@@ -23,10 +24,11 @@ public class Reader{
 	 */
 	private ArrayList<ArrayList<String>> dancers;
 	
-	public Reader(File file) {
-		this.file = file;
+	//private HashMap<String, IndexedList>;
+	
+	public Reader(String pathname) {
+		file = new File(pathname);
 		dancers = new ArrayList<ArrayList<String>>();
-		System.out.println(file.toString());
 	}
 	
 	/**
@@ -39,6 +41,8 @@ public class Reader{
 		while(scanner.hasNextLine()) {
 			String line = scanner.nextLine();
 			System.out.println(line);
+			
+			String[] temp = line.split("\t");
 		}
 	}
 }

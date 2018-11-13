@@ -1,9 +1,19 @@
+import java.io.FileNotFoundException;
 
 public class DanceController implements Controller{
-
+	
+	public DanceController() {
+	}
+	
 	@Override
 	public String listAllDancersIn(String dance) {
-		// TODO Auto-generated method stub
+		Reader reader = new Reader("files\\danceShowData_danceGroups.csv");
+		try {
+			reader.readFile();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 

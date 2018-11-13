@@ -21,13 +21,10 @@ public class TUI {
 
 	private Controller controller;  
 	private Scanner stdIn;
-	private Reader reader;
 	
 	public TUI(DanceController controller) throws FileNotFoundException {
 		
 		this.controller = controller;
-		reader = new Reader(new File("/files/danceShowData_danceGroups.csv"));
-		reader.readFile();
 		// Creates a Scanner object for obtaining user input
 		stdIn = new Scanner(System.in);
 		
