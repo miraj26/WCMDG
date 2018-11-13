@@ -18,4 +18,12 @@ public class DoubleNode<T> {
 	public void setPrevious(DoubleNode<T> dnode){
 		previous = dnode;
 	}
+	
+	public DoubleNode<T> getNext(){
+		return next;
+	}
+	
+	public void setNext(DoubleNode<T> dnode) {
+		next = dnode;
+	}
 }
