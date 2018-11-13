@@ -44,8 +44,11 @@ public class Reader{
 			//System.out.println(line);
 			String names = "";
 			String[] temp = line.split("\t");
-			for(int i = 1; i < temp.length; i++) {
-				if(i == temp.length -1) {
+			for(int i = 0; i < temp.length; i++) {
+				if(i == 0) {
+					names += temp[0] + " members: ";
+				}
+				else if(i == temp.length -1) {
 					names += temp[i] + ".";
 				}
 				else {
