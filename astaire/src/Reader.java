@@ -23,13 +23,13 @@ public class Reader{
 	/**
 	 * Holds a 2D ArrayList of Strings.
 	 */
-	private ArrayList<ArrayList<String>> dancers;
+	//private ArrayList<ArrayList<String>> dancers;
 	
-	private HashMap<String, IndexedList<String>> dances;
+	private HashMap<String, String> dances;
 	
 	public Reader(String pathname) {
 		file = new File(pathname);
-		dancers = new ArrayList<ArrayList<String>>();
+		dances = new HashMap<String, String>();
 	}
 	
 	/**
@@ -41,9 +41,22 @@ public class Reader{
 		scanner.useDelimiter("\n");
 		while(scanner.hasNextLine()) {
 			String line = scanner.nextLine();
-			System.out.println(line);
-			
+			//System.out.println(line);
+			String names = "";
 			String[] temp = line.split("\t");
+			for(int i = 1; i < temp.length; i++) {
+				if(i == temp.length -1) {
+					names += temp[i] + ".";
+				}
+				else {
+					names += temp[i] + ", ";
+				}
+			}
+			dances.put(temp[0], names);
 		}
+	}
+	
+	public HashMap<String, String> getData(){
+		return dances;
 	}
 }
