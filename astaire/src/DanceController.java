@@ -2,31 +2,54 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class DanceController implements Controller{
-	
+public class DanceController implements Controller {
+
+	private Reader danceGroups;
+	private Reader dances;
+	private Reader runningOrder;
+
 	public DanceController() {
-	}
-	
-	@Override
-	public String listAllDancersIn(String danceName) {
-		Reader reader = new Reader("files\\danceShowData_danceGroups.csv");
+		danceGroups = new Reader("files\\danceShowData_danceGroups.csv");
 		try {
-			reader.readFile();
-			HashMap<String, String> data = reader.getData();
-			String dance = data.get(danceName);
-			return dance;
-			
+			danceGroups.readFile();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		dances = new Reader("files\\danceShowData_dances.csv");
+		try {
+			dances.readFile();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		runningOrder = new Reader("files\\danceShowData_runningOrder.csv");
+		try {
+			runningOrder.readFile();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public String listAllDancersIn(String danceName) {
+		HashMap<String, ArrayList<String>> data = danceGroups.getData();
+		ArrayList<String> dances = data.get(danceName);
+		String results = "";
+		for(String dance : dances) {
+			results += dance + " ";
+		}
+		return danceName + ": " + results;
 	}
 
 	@Override
 	public String listAllDancesAndPerformers() {
-		// TODO Auto-generated method stub
-		return null;
+		String results = "";
+		
+		ArrayList<String> keyList = danceGroups.getKeyList();
+		
+		return results;
 	}
 
 	@Override

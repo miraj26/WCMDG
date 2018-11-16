@@ -11,6 +11,7 @@ public abstract class DoubleList<T> {
 		count = 0;
 	}
 	
+	/*
 	protected T removeLast() {
 		if (isEmpty()) {
 			throw new IllegalStateException("List is empty");
@@ -26,4 +27,5 @@ public abstract class DoubleList<T> {
 		}
 		return result;
 	}
+	*/
 }
