@@ -37,7 +37,7 @@ public class DanceController implements Controller {
 		HashMap<String, ArrayList<String>> data = danceGroups.getData();
 		ArrayList<String> dances = data.get(danceName);
 		String results = "";
-		for(String dance : dances) {
+		for (String dance : dances) {
 			results += dance + " ";
 		}
 		return danceName + ": " + results;
@@ -46,9 +46,38 @@ public class DanceController implements Controller {
 	@Override
 	public String listAllDancesAndPerformers() {
 		String results = "";
-		
-		ArrayList<String> keyList = danceGroups.getKeyList();
-		
+
+		ArrayList<String> keys = danceGroups.getKeyList();
+		ArrayList<ArrayList<String>> values = danceGroups.getValueList();
+
+		for (int i = 1; i < values.size() - 1; i++) {
+			boolean sorted = false;
+			ArrayList<String> value = values.get(i);
+
+			int j = 0;
+			int count = 0;
+			// for (int j = 0; j < value.size() - 1; j++) {
+			while (sorted == false) {
+				int difference = value.get(j).compareTo(value.get(j + 1));
+				if (difference > 0) {
+					// System.out.println(value.get(j) + " and " + value.get(j + 1));
+					String temp = value.get(j + 1);
+					value.remove(j + 1);
+					value.add(j, temp);
+					count++;
+				}
+				j++;
+				if (j >= value.size() - 1) {
+					j = 0;
+					count = 0;
+				}
+				if (count == 0 && j == value.size() - 2) {
+					sorted = true;
+				}
+			}
+			results += keys.get(i) + ": " + values.get(i) + "\n";
+		}
+
 		return results;
 	}
 
