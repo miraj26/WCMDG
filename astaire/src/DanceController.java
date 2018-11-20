@@ -50,7 +50,7 @@ public class DanceController implements Controller {
 		ArrayList<String> keys = danceGroups.getKeyList();
 		ArrayList<ArrayList<String>> values = danceGroups.getValueList();
 
-		for (int i = 1; i < values.size() - 1; i++) {
+		for (int i = 1; i < values.size(); i++) { //got rid of -1 after values.size()
 			boolean sorted = false;
 			ArrayList<String> value = values.get(i);
 
@@ -59,6 +59,7 @@ public class DanceController implements Controller {
 			// for (int j = 0; j < value.size() - 1; j++) {
 			while (sorted == false) {
 				int difference = value.get(j).compareTo(value.get(j + 1));
+				//If it is 1
 				if (difference > 0) {
 					// System.out.println(value.get(j) + " and " + value.get(j + 1));
 					String temp = value.get(j + 1);
