@@ -1,5 +1,6 @@
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class DanceController implements Controller {
@@ -48,37 +49,15 @@ public class DanceController implements Controller {
 		String results = "";
 
 		ArrayList<String> keys = danceGroups.getKeyList();
-		ArrayList<ArrayList<String>> values = danceGroups.getValueList();
+		ArrayList<ArrayList<String>> danceNames = danceGroups.getValueList();
 
-		for (int i = 1; i < values.size(); i++) { //got rid of -1 after values.size()
-			boolean sorted = false;
-			ArrayList<String> value = values.get(i);
-
-			int j = 0;
-			int count = 0;
-			// for (int j = 0; j < value.size() - 1; j++) {
-			while (sorted == false) {
-				int difference = value.get(j).compareTo(value.get(j + 1));
-				//If it is 1
-				if (difference > 0) {
-					// System.out.println(value.get(j) + " and " + value.get(j + 1));
-					String temp = value.get(j + 1);
-					value.remove(j + 1);
-					value.add(j, temp);
-					count++;
-				}
-				j++;
-				if (j >= value.size() - 1) {
-					j = 0;
-					count = 0;
-				}
-				if (count == 0 && j == value.size() - 2) {
-					sorted = true;
-				}
-			}
-			results += keys.get(i) + ": " + values.get(i) + "\n";
+		for (int i = 1; i < danceNames.size(); i++) { // got rid of -1 after values.size()
+			ArrayList<String> performerNames = danceNames.get(i);
+			
+			Collections.sort(performerNames);
+			
+			results += keys.get(i) + ": " + performerNames + "\n";
 		}
-
 		return results;
 	}
 
