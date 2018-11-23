@@ -55,8 +55,7 @@ public class DanceController implements Controller {
 	public String checkFeasibilityOfRunningOrder(String filename, int gaps) {
 		Reader runningOrder = new Reader("files\\" + filename);
 		try {
-			runningOrder.readFile();
-			ArrayList<ArrayList<String>> performerNames = runningOrder.getValueList();
+			runningOrder.newReadFile();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
