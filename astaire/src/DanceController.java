@@ -7,7 +7,6 @@ public class DanceController implements Controller {
 
 	private Reader danceGroups;
 	private Reader dances;
-	private Reader runningOrder;
 
 	public DanceController() {
 		danceGroups = new Reader("files\\danceShowData_danceGroups.csv");
@@ -20,13 +19,6 @@ public class DanceController implements Controller {
 		dances = new Reader("files\\danceShowData_dances.csv");
 		try {
 			dances.readFile();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		runningOrder = new Reader("files\\danceShowData_runningOrder.csv");
-		try {
-			runningOrder.readFile();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -53,9 +45,7 @@ public class DanceController implements Controller {
 
 		for (int i = 1; i < danceNames.size(); i++) { // got rid of -1 after values.size()
 			ArrayList<String> performerNames = danceNames.get(i);
-			
 			Collections.sort(performerNames);
-			
 			results += keys.get(i) + ": " + performerNames + "\n";
 		}
 		return results;
@@ -63,7 +53,14 @@ public class DanceController implements Controller {
 
 	@Override
 	public String checkFeasibilityOfRunningOrder(String filename, int gaps) {
-		// TODO Auto-generated method stub
+		Reader runningOrder = new Reader("files\\" + filename);
+		try {
+			runningOrder.readFile();
+			ArrayList<ArrayList<String>> performerNames = runningOrder.getValueList();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 

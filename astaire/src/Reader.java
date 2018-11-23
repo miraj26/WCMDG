@@ -1,7 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -54,7 +53,6 @@ public class Reader {
 				String[] name = temp[1].split(", ");
 				for (int j = 0; j < name.length; j++) {
 					names.add(name[j]);
-					System.out.println(name[j]);
 				}
 				dances.put(temp[0], names);
 				keyList.add(temp[0]);
