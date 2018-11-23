@@ -18,6 +18,16 @@ public abstract class DoubleList<T> {
 		return false;
 	}
 	
+	public int size() {
+		return count;
+	}
+	
+	public void clear() {
+		front = null;
+		rear = null;
+		count = 0;
+	}
+	
 	protected T removeLast() {
 		if (isEmpty()) {
 			throw new IllegalStateException("List is empty");
@@ -68,5 +78,77 @@ public abstract class DoubleList<T> {
 			node.getPrevious().setNext(node.getNext());
 			count--;
 		}
+	}
+	
+	protected void addFirst(T element) {
+		DoubleNode<T> node = new DoubleNode<T>(element);
+		node.setNext(front);
+		front = node;
+		if(count == 0) {
+			rear = node;
+		}
+		else {
+			front.getNext().setPrevious(node);
+		}
+		count++;
+	}
+	
+	protected void addAfter(DoubleNode<T> current, T element) {
+		if(current == null) {
+			throw new IllegalArgumentException("Null Node");
+		}
+		if(current == rear) {
+			DoubleNode<T> node = new DoubleNode<T>(element);
+			node.setNext(current.getNext());
+			node.setPrevious(current);
+			current.getNext().setPrevious(node);
+			current.setNext(node);
+			count++;
+		}
+	}
+	
+	protected DoubleNode<T> find(T target){
+		DoubleNode<T> cursor = front;
+		while(cursor != null) {
+			if(target.equals(cursor.getElement())){
+				return cursor;
+			} else {
+				cursor = cursor.getNext();
+			}
+		}
+		return null;
+	}
+	
+	public boolean contains(T element) {
+		return (find(element) != null);
+	}
+	
+	private class DoubleIterator implements Iterator<T>{
+
+		private DoubleNode<T> cursor;
+		
+		private DoubleNode<T> node;
+		
+		public DoubleIterator() {
+			cursor = front;
+			node = null;
+		}
+		
+		@Override
+		public boolean hasNext() {
+			return (cursor != null);
+		}
+
+		@Override
+		public T next() {
+			if(!hasNext()) {
+				throw new IllegalStateException("Do next element");
+			}
+			node = cursor;
+			T result = cursor.getElement();
+			cursor = cursor.getNext();
+			return result;
+		}
+		
 	}
 }
