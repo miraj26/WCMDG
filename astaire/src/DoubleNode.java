@@ -26,4 +26,8 @@ public class DoubleNode<T> {
 	public void setNext(DoubleNode<T> dnode) {
 		next = dnode;
 	}
+	
+	public T getElement() {
+		return element;
+	}
 }
