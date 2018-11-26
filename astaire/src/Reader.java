@@ -87,6 +87,10 @@ public class Reader {
 		}
 	}
 
+	public LinkedList<LinearNode<ArrayList<String>>> getLinkedList(){
+		return linkedList;
+	}
+	
 	public HashMap<String, ArrayList<String>> getData() {
 		return dances;
 	}

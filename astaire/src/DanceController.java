@@ -2,6 +2,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 public class DanceController implements Controller {
 
@@ -40,9 +41,10 @@ public class DanceController implements Controller {
 	public String listAllDancesAndPerformers() {
 		String results = "";
 
-		ArrayList<String> keys = danceGroups.getKeyList();
-		ArrayList<ArrayList<String>> danceNames = danceGroups.getValueList();
-
+		ArrayList<String> keys = dances.getKeyList();
+		ArrayList<ArrayList<String>> danceNames = dances.getValueList();
+		Collections.sort(keys);
+		
 		for (int i = 1; i < danceNames.size(); i++) { // got rid of -1 after values.size()
 			ArrayList<String> performerNames = danceNames.get(i);
 			Collections.sort(performerNames);
@@ -56,6 +58,7 @@ public class DanceController implements Controller {
 		Reader runningOrder = new Reader("files\\" + filename);
 		try {
 			runningOrder.newReadFile();
+			LinkedList<LinearNode<ArrayList<String>>> linkedList = runningOrder.getLinkedList();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
