@@ -68,6 +68,7 @@ public class Reader {
 	public void newReadFile() throws FileNotFoundException {
 		scanner = new Scanner(file);
 		LinearNode<ArrayList<String>> previous = null;
+		scanner.nextLine();
 		while (scanner.hasNextLine()) {
 			String line = scanner.nextLine();
 			String[] temp = line.split("\t");

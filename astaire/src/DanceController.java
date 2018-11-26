@@ -2,6 +2,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 public class DanceController implements Controller {
@@ -44,7 +45,7 @@ public class DanceController implements Controller {
 		ArrayList<String> keys = dances.getKeyList();
 		ArrayList<ArrayList<String>> danceNames = dances.getValueList();
 		Collections.sort(keys);
-		
+
 		for (int i = 1; i < danceNames.size(); i++) { // got rid of -1 after values.size()
 			ArrayList<String> performerNames = danceNames.get(i);
 			Collections.sort(performerNames);
@@ -55,10 +56,20 @@ public class DanceController implements Controller {
 
 	@Override
 	public String checkFeasibilityOfRunningOrder(String filename, int gaps) {
-		Reader runningOrder = new Reader("files\\" + filename);
+		// Reader runningOrder = new Reader("files\\" + filename);
+		Reader runningOrder = new Reader("files\\danceShowData_runningOrder.csv");
 		try {
 			runningOrder.newReadFile();
 			LinkedList<LinearNode<ArrayList<String>>> linkedList = runningOrder.getLinkedList();
+
+			Iterator<LinearNode<ArrayList<String>>> iterator = linkedList.iterator();
+			while (iterator.hasNext()) {
+				ArrayList<String> performers = iterator.next().getElement();
+				for (int i = 0; i < gaps; i++) {
+					
+				}
+			}
+
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
