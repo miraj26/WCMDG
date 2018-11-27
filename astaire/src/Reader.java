@@ -56,7 +56,7 @@ public class Reader {
 				ArrayList<String> names = new ArrayList<>();
 				String[] name = temp[1].split(", ");
 				for (int j = 0; j < name.length; j++) {
-					names.add(name[j]);
+					names.add(name[j].trim());
 				}
 				dances.put(temp[0], names);
 				keyList.add(temp[0]);

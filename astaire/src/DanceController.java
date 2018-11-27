@@ -41,13 +41,21 @@ public class DanceController implements Controller {
 	@Override
 	public String listAllDancesAndPerformers() {
 		String results = "";
-
+		HashMap<String, ArrayList<String>> data = danceGroups.getData();
+		
 		ArrayList<String> keys = dances.getKeyList();
-		ArrayList<ArrayList<String>> danceNames = dances.getValueList();
+		ArrayList<ArrayList<String>> danceNames = dances.getValueList();		
 		Collections.sort(keys);
 
 		for (int i = 1; i < danceNames.size(); i++) { // got rid of -1 after values.size()
 			ArrayList<String> performerNames = danceNames.get(i);
+			for(int j = 0; j < performerNames.size(); j++) {
+				if(data.containsKey(performerNames.get(j))) {
+					ArrayList<String> names = data.get(performerNames.get(j));
+					performerNames.remove(j);
+					performerNames.addAll(0, names);
+				}
+			}
 			Collections.sort(performerNames);
 			results += keys.get(i) + ": " + performerNames + "\n";
 		}
