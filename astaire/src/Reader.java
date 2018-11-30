@@ -32,7 +32,9 @@ public class Reader {
 
 	private ArrayList<ArrayList<String>> valueList;
 
-	private LinkedList<LinearNode<ArrayList<String>>> linkedList;
+	private LinkedList<LinearNode<Performance>> linkedList;
+	
+	private ArrayList<Performance> performances;
 
 	public Reader(String pathname) {
 		file = new File(pathname);
@@ -40,6 +42,7 @@ public class Reader {
 		keyList = new ArrayList<>();
 		valueList = new ArrayList<>();
 		linkedList = new LinkedList<>();
+		performances = new ArrayList<>();
 	}
 
 	/**
@@ -67,17 +70,20 @@ public class Reader {
 
 	public void newReadFile() throws FileNotFoundException {
 		scanner = new Scanner(file);
-		LinearNode<ArrayList<String>> previous = null;
+		LinearNode<Performance> previous = null;
 		scanner.nextLine();
 		while (scanner.hasNextLine()) {
 			String line = scanner.nextLine();
 			String[] temp = line.split("\t");
-			String[] dancerName = temp[1].split(", ");
+			Performance performance = new Performance(temp[0].trim());
+			String[] dancerName = temp[1].split(",");
 			ArrayList<String> names = new ArrayList<>();
 			for (int i = 0; i < dancerName.length; i++) {
 				names.add(dancerName[i]);
+				performance.addDancer(dancerName[i].trim());
 			}
-			LinearNode<ArrayList<String>> current = new LinearNode<>(names);
+			performances.add(performance);
+			LinearNode<Performance> current = new LinearNode<>(performance);
 			if (linkedList.isEmpty()) {
 				linkedList.addFirst(current);
 			} else if (previous != null) {
@@ -88,7 +94,7 @@ public class Reader {
 		}
 	}
 
-	public LinkedList<LinearNode<ArrayList<String>>> getLinkedList(){
+	public LinkedList<LinearNode<Performance>> getLinkedList(){
 		return linkedList;
 	}
 	
@@ -102,6 +108,10 @@ public class Reader {
 
 	public ArrayList<ArrayList<String>> getValueList() {
 		return valueList;
+	}
+	
+	public ArrayList<Performance> getPerformances(){
+		return performances;
 	}
 
 }

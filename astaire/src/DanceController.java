@@ -42,15 +42,15 @@ public class DanceController implements Controller {
 	public String listAllDancesAndPerformers() {
 		String results = "";
 		HashMap<String, ArrayList<String>> data = danceGroups.getData();
-		
+
 		ArrayList<String> keys = dances.getKeyList();
-		ArrayList<ArrayList<String>> danceNames = dances.getValueList();		
+		ArrayList<ArrayList<String>> danceNames = dances.getValueList();
 		Collections.sort(keys);
 
 		for (int i = 1; i < danceNames.size(); i++) { // got rid of -1 after values.size()
 			ArrayList<String> performerNames = danceNames.get(i);
-			for(int j = 0; j < performerNames.size(); j++) {
-				if(data.containsKey(performerNames.get(j))) {
+			for (int j = 0; j < performerNames.size(); j++) {
+				if (data.containsKey(performerNames.get(j))) {
 					ArrayList<String> names = data.get(performerNames.get(j));
 					performerNames.remove(j);
 					performerNames.addAll(0, names);
@@ -66,15 +66,41 @@ public class DanceController implements Controller {
 	public String checkFeasibilityOfRunningOrder(String filename, int gaps) {
 		// Reader runningOrder = new Reader("files\\" + filename);
 		Reader runningOrder = new Reader("files\\danceShowData_runningOrder.csv");
-		try {
-			runningOrder.newReadFile();
-			LinkedList<LinearNode<ArrayList<String>>> linkedList = runningOrder.getLinkedList();
+		String clashes = "";
+		boolean successful = true;
 
-			Iterator<LinearNode<ArrayList<String>>> iterator = linkedList.iterator();
-			while (iterator.hasNext()) {
-				ArrayList<String> performers = iterator.next().getElement();
+		try {
+			boolean listSearched = false;
+
+			runningOrder.newReadFile();
+			LinkedList<LinearNode<Performance>> linked = runningOrder.getLinkedList();
+			// Iterator<LinearNode<Performance>> iterator = linked.iterator();
+			LinearNode<Performance> current = linked.get(0);
+
+			while (!listSearched) {
+				ArrayList<String> dancers = current.getElement().getDancers();
+				LinearNode<Performance> nextInLine = current.getNext();
 				for (int i = 0; i < gaps; i++) {
-					
+					if (linked.indexOf(nextInLine) != -1) {
+						ArrayList<String> nextDancers = nextInLine.getElement().getDancers();
+						for (String dancer : dancers) {
+							if (nextDancers.contains(dancer)) {
+								String message = "There is a clash with " + dancer + ", in "
+										+ nextInLine.getElement().getDanceName() + "\n ";
+								if(!clashes.contains(message)) {
+									clashes += message;
+								}
+								successful = false;
+							}
+						}
+
+						nextInLine = nextInLine.getNext();
+					}
+				}
+				if (current.getNext() != null) {
+					current = current.getNext();
+				} else {
+					listSearched = true;
 				}
 			}
 
@@ -82,7 +108,11 @@ public class DanceController implements Controller {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		if (successful) {
+			return "Running Order is valid.";
+		} else {
+			return clashes;
+		}
 	}
 
 	@Override

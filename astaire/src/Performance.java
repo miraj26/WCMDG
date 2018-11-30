@@ -1,11 +1,11 @@
 import java.util.ArrayList;
 
-public class Performers {
+public class Performance {
 	
 	private String danceName;
 	private ArrayList<String> dancers;
 	
-	public Performers(String danceName) {
+	public Performance(String danceName) {
 		this.danceName = danceName;
 		dancers = new ArrayList<String>();
 	}
