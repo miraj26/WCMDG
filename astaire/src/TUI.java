@@ -14,7 +14,7 @@ import java.util.Scanner;
 public class TUI {
 	
 	public static void main(String[] args) throws FileNotFoundException {
-		TUI tui = new TUI(new DanceController());
+		new TUI(new DanceController());
 	}  
 
 	private Controller controller;  

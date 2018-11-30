@@ -2,7 +2,6 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 public class DanceController implements Controller {
@@ -47,7 +46,7 @@ public class DanceController implements Controller {
 		ArrayList<ArrayList<String>> danceNames = dances.getValueList();
 		Collections.sort(keys);
 
-		for (int i = 1; i < danceNames.size(); i++) { // got rid of -1 after values.size()
+		for (int i = 1; i < danceNames.size(); i++) {
 			ArrayList<String> performerNames = danceNames.get(i);
 			for (int j = 0; j < performerNames.size(); j++) {
 				if (data.containsKey(performerNames.get(j))) {
@@ -64,8 +63,8 @@ public class DanceController implements Controller {
 
 	@Override
 	public String checkFeasibilityOfRunningOrder(String filename, int gaps) {
-		// Reader runningOrder = new Reader("files\\" + filename);
-		Reader runningOrder = new Reader("files\\danceShowData_runningOrder.csv");
+		Reader runningOrder = new Reader("files\\" + filename);
+		// Reader runningOrder = new Reader("files\\danceShowData_runningOrder.csv");
 		String clashes = "";
 		boolean successful = true;
 
@@ -74,26 +73,24 @@ public class DanceController implements Controller {
 
 			runningOrder.newReadFile();
 			LinkedList<LinearNode<Performance>> linked = runningOrder.getLinkedList();
-			// Iterator<LinearNode<Performance>> iterator = linked.iterator();
 			LinearNode<Performance> current = linked.get(0);
 
 			while (!listSearched) {
 				ArrayList<String> dancers = current.getElement().getDancers();
 				LinearNode<Performance> nextInLine = current.getNext();
 				for (int i = 0; i < gaps; i++) {
-					if (linked.indexOf(nextInLine) != -1) {
+					if (linked.indexOf(nextInLine) != -1) { // Checks if nextInLine is null
 						ArrayList<String> nextDancers = nextInLine.getElement().getDancers();
 						for (String dancer : dancers) {
 							if (nextDancers.contains(dancer)) {
 								String message = "There is a clash with " + dancer + ", in "
 										+ nextInLine.getElement().getDanceName() + "\n ";
-								if(!clashes.contains(message)) {
+								if (!clashes.contains(message)) {
 									clashes += message;
 								}
 								successful = false;
 							}
 						}
-
 						nextInLine = nextInLine.getNext();
 					}
 				}
@@ -120,5 +117,4 @@ public class DanceController implements Controller {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }

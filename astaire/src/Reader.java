@@ -51,7 +51,6 @@ public class Reader {
 	 */
 	public void readFile() throws FileNotFoundException {
 		scanner = new Scanner(file);
-		// scanner.useDelimiter("\n");
 		while (scanner.hasNextLine()) {
 			String line = scanner.nextLine();
 			String[] temp = line.split("\t");
@@ -77,9 +76,9 @@ public class Reader {
 			String[] temp = line.split("\t");
 			Performance performance = new Performance(temp[0].trim());
 			String[] dancerName = temp[1].split(",");
-			ArrayList<String> names = new ArrayList<>();
+			//ArrayList<String> names = new ArrayList<>();
 			for (int i = 0; i < dancerName.length; i++) {
-				names.add(dancerName[i]);
+				//names.add(dancerName[i]);
 				performance.addDancer(dancerName[i].trim());
 			}
 			performances.add(performance);
