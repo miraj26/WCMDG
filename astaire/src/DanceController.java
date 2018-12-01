@@ -115,6 +115,14 @@ public class DanceController implements Controller {
 	@Override
 	public String generateRunningOrder(int gaps) {
 		// TODO Auto-generated method stub
+		Reader dances = new Reader("files\\danceShowData_dances.csv");//change path name
+		LinkedList<LinearNode<Performance>> runningOrder = new LinkedList<>();
+		LinkedList<LinearNode<Performance>> currentDanceOrder = new LinkedList<>();
+		String runningOrderList = "";
+		boolean completed = false;
+		
+		
+		
 		return null;
 	}
 }
