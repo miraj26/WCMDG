@@ -22,18 +22,25 @@ public class Reader {
 	 */
 	private File file;
 	/**
-	 * Holds a 2D ArrayList of Strings.
+	 * Holds a HashMap of the dances, where the Key is the dance group and the Value is an ArrayList of string
+	 * values containing the names of the dancers.
 	 */
-	// private ArrayList<ArrayList<String>> dancers;
-
 	private HashMap<String, ArrayList<String>> dances;
-
+	/**
+	 * Holds an ArrayList of Strings, containing the names of all the dance groups.
+	 */
 	private ArrayList<String> keyList;
-
+	/**
+	 * Holds an ArrayList of Strings, containing the names of all the dancers of each group.
+	 */
 	private ArrayList<ArrayList<String>> valueList;
-
+	/**
+	 * Holds a LinkedList, where each LinkedNode holds a performance.
+	 */
 	private LinkedList<LinearNode<Performance>> linkedList;
-	
+	/**
+	 * Holds an ArrayList of Performance.
+	 */
 	private ArrayList<Performance> performances;
 
 	public Reader(String pathname) {
@@ -92,23 +99,39 @@ public class Reader {
 			previous = current;
 		}
 	}
-
+	/**
+	 * Gets the LinkedList containing LinkedNodes holding each Performance.
+	 * @return <code>LinkedList<LinearNode<Performance>></code> 
+	 */
 	public LinkedList<LinearNode<Performance>> getLinkedList(){
 		return linkedList;
 	}
-	
+	/**
+	 * Gets the HashMap containing the dances, where the key is a String containing the Dance Group Name
+	 * and the value is the ArrayList of Strings which are the names of each dancer.
+	 * @return <code>HashMap<String, ArrayList<String>></code> dances.
+	 */
 	public HashMap<String, ArrayList<String>> getData() {
 		return dances;
 	}
-
+	/**
+	 * Gets the ArrayList of String values containing the names of all the Dance Groups
+	 * @return <code>ArrayList<String></code> keyList
+	 */
 	public ArrayList<String> getKeyList() {
 		return keyList;
 	}
-
+	/**
+	 * Gets the ArrayList of ArrayLists of String values, which contains the names of the dancers in each dancer
+	 * @return <code>ArrayList<ArrayList<String>></code> valueList
+	 */
 	public ArrayList<ArrayList<String>> getValueList() {
 		return valueList;
 	}
-	
+	/**
+	 * Gets the ArrayList of Performance, containing details of each performance.
+	 * @return <code>ArrayList<Performance></code> performances.
+	 */
 	public ArrayList<Performance> getPerformances(){
 		return performances;
 	}
