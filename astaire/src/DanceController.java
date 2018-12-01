@@ -2,6 +2,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 public class DanceController implements Controller {
@@ -115,14 +116,90 @@ public class DanceController implements Controller {
 	@Override
 	public String generateRunningOrder(int gaps) {
 		// TODO Auto-generated method stub
-		Reader dances = new Reader("files\\danceShowData_dances.csv");//change path name
-		LinkedList<LinearNode<Performance>> runningOrder = new LinkedList<>();
-		LinkedList<LinearNode<Performance>> currentDanceOrder = new LinkedList<>();
+
+		LinkedList<LinearNode<Performance>> runningOrder = new LinkedList<>(); // final
 		String runningOrderList = "";
 		boolean completed = false;
-		
-		
-		
+
+		try {
+			dances.newReadFile();
+			ArrayList<Performance> performances = dances.getPerformances();
+			ArrayList<Performance> temp = new ArrayList<>();
+			while (!completed) {
+				for (Performance performance : performances) {
+					if (!runningOrder.isEmpty()) {
+						boolean success = true;
+						Performance lastInList = runningOrder.getLast().getElement();
+						// int index = performances.indexOf(lastInList);
+						if (!temp.isEmpty()) {
+							for (int i = 0; i < temp.size(); i++) {
+								for (int j = 0; j < gaps; j++) {
+									int index = runningOrder.size() - j - 1;
+									if (index >= 0) {
+										ArrayList<String> namesInList = runningOrder.get(index).getElement()
+												.getDancers();
+										ArrayList<String> namesChecking = performance.getDancers();
+										for (String name : namesInList) {
+											if (namesChecking.contains(name)) {
+												success = false;
+											}
+										}
+									}
+								}
+								if (success) {
+									Performance desired = temp.remove(i);
+									runningOrder.addLast(new LinearNode<Performance>(desired));
+									// completed = true;
+								}
+							}
+						} else if (!temp.isEmpty() && !success || temp.isEmpty()) {
+							ArrayList<String> namesChecking = performance.getDancers();
+							for (int i = 0; i < gaps; i++) {
+								int index = runningOrder.size() - i -1;
+								if (index >= 0) {
+									ArrayList<String> namesInList = runningOrder.get(index).getElement().getDancers();
+									for (String name : namesInList) {
+										if (namesChecking.contains(name)) {
+											success = false;
+											temp.add(performance);
+											// performances.remove(performance);
+										}
+									}
+								}
+							}
+							if(success) {
+								runningOrder.addLast(new LinearNode<Performance>(performance));
+								// completed = true;
+							}
+						}
+					} else {
+						runningOrder.add(new LinearNode<Performance>(performance));
+					}
+				}
+				
+				if(checkFeasibilityOfRunningOrder("danceShowData_dances.csv", gaps).equals("Running Order is valid.")) {
+					completed = true;
+				}
+				
+				if(!completed) {
+					return "Running order cannot be generated.";
+				}
+			}
+						
+			Iterator<LinearNode<Performance>> iterator = runningOrder.listIterator();
+			int i = 1;
+			while(iterator.hasNext()) {
+				runningOrderList += i + ": " + iterator.next().getElement().getDancers() + "\n";
+				i++;
+			}
+			
+			return runningOrderList;
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		return null;
 	}
 }
