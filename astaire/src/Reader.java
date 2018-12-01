@@ -8,7 +8,7 @@ import java.util.Scanner;
 /**
  * This class reads the .csv file and stores it into an array.
  * 
- * @author Miraj Shah, Jacob Williams, Devin Shingadia
+ * @author Jacob Williams, Miraj Shah, Devin Shingadia
  *
  */
 public class Reader {
