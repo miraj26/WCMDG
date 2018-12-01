@@ -125,74 +125,78 @@ public class DanceController implements Controller {
 			dances.newReadFile();
 			ArrayList<Performance> performances = dances.getPerformances();
 			ArrayList<Performance> temp = new ArrayList<>();
+			ArrayList<Integer> indexInList = new ArrayList<>();
+
+			runningOrder.addFirst(new LinearNode<Performance>(performances.get(0)));
+			indexInList.add(0);
+
 			while (!completed) {
 				for (Performance performance : performances) {
-					if (!runningOrder.isEmpty()) {
-						boolean success = true;
-						Performance lastInList = runningOrder.getLast().getElement();
-						// int index = performances.indexOf(lastInList);
-						if (!temp.isEmpty()) {
-							for (int i = 0; i < temp.size(); i++) {
-								for (int j = 0; j < gaps; j++) {
-									int index = runningOrder.size() - j - 1;
-									if (index >= 0) {
-										ArrayList<String> namesInList = runningOrder.get(index).getElement()
-												.getDancers();
-										ArrayList<String> namesChecking = performance.getDancers();
-										for (String name : namesInList) {
-											if (namesChecking.contains(name)) {
-												success = false;
-											}
-										}
+					boolean success = true;
+					if (!indexInList.contains(performances.indexOf(performance))) {
+						ArrayList<String> namesChecking = performance.getDancers();
+						for (int i = 0; i < gaps; i++) {
+							int index = runningOrder.size() - i - 1;
+							if (index >= 0) {
+								ArrayList<String> namesInList = runningOrder.get(index).getElement().getDancers();
+								for (String name : namesInList) {
+									if (namesChecking.contains(name)) {
+										success = false;
 									}
 								}
-								if (success) {
-									Performance desired = temp.remove(i);
-									runningOrder.addLast(new LinearNode<Performance>(desired));
-									// completed = true;
-								}
-							}
-						} else if (!temp.isEmpty() && !success || temp.isEmpty()) {
-							ArrayList<String> namesChecking = performance.getDancers();
-							for (int i = 0; i < gaps; i++) {
-								int index = runningOrder.size() - i -1;
-								if (index >= 0) {
-									ArrayList<String> namesInList = runningOrder.get(index).getElement().getDancers();
-									for (String name : namesInList) {
-										if (namesChecking.contains(name)) {
-											success = false;
-											temp.add(performance);
-											// performances.remove(performance);
-										}
-									}
-								}
-							}
-							if(success) {
-								runningOrder.addLast(new LinearNode<Performance>(performance));
-								// completed = true;
 							}
 						}
-					} else {
-						runningOrder.add(new LinearNode<Performance>(performance));
+						if (success) {
+							indexInList.add(performances.indexOf(performance));
+							runningOrder.addLast(new LinearNode<Performance>(performance));
+						} else {
+							temp.add(performance);
+						}
 					}
 				}
-				
-				if(checkFeasibilityOfRunningOrder("danceShowData_dances.csv", gaps).equals("Running Order is valid.")) {
+				if (!temp.isEmpty()) {
+					for (Performance performance : temp) {
+						boolean success = true;
+						ArrayList<String> namesChecking = performance.getDancers();
+						for (int i = 0; i < gaps; i++) {
+							int index = runningOrder.size() - i - 1;
+							if (index >= 0) {
+								ArrayList<String> namesInList = runningOrder.get(index).getElement().getDancers();
+								for (String name : namesInList) {
+									if (namesChecking.contains(name)) {
+										success = false;
+									}
+								}
+							}
+						}
+						if (success) {
+							indexInList.add(performances.indexOf(performance));
+							runningOrder.addLast(new LinearNode<Performance>(performance));
+						}
+					}
+				}
+
+				if (checkFeasibilityOfRunningOrder("danceShowData_dances.csv", gaps)
+						.equals("Running Order is valid.")) {
 					completed = true;
 				}
-				
-				if(!completed) {
+//				if (runningOrder.size() == 36) {
+//					completed = true;
+//				}
+
+				if (!completed) {
 					return "Running order cannot be generated.";
 				}
+
 			}
-						
+
 			Iterator<LinearNode<Performance>> iterator = runningOrder.listIterator();
 			int i = 1;
-			while(iterator.hasNext()) {
+			while (iterator.hasNext()) {
 				runningOrderList += i + ": " + iterator.next().getElement().getDancers() + "\n";
 				i++;
 			}
-			
+
 			return runningOrderList;
 
 		} catch (FileNotFoundException e) {
