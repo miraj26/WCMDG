@@ -41,5 +41,9 @@ public class Performance {
 	public ArrayList<String> getDancers(){
 		return dancers;
 	}
+	
+	public void replaceDancerNames(ArrayList<String> dancerNames) {
+		dancers = dancerNames;
+	}
 
 }

@@ -2,6 +2,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -64,8 +65,9 @@ public class DanceController implements Controller {
 
 	@Override
 	public String checkFeasibilityOfRunningOrder(String filename, int gaps) {
-		Reader runningOrder = new Reader("files\\" + filename);
-		// Reader runningOrder = new Reader("files\\danceShowData_runningOrder.csv");
+		// Reader runningOrder = new Reader("files\\" + filename);
+		Reader runningOrder = new Reader("files\\danceShowData_runningOrder.csv");
+
 		String clashes = "";
 		boolean successful = true;
 
@@ -73,7 +75,9 @@ public class DanceController implements Controller {
 			boolean listSearched = false;
 
 			runningOrder.newReadFile();
+			HashMap<String, ArrayList<String>> data = danceGroups.getData();
 			LinkedList<LinearNode<Performance>> linked = runningOrder.getLinkedList();
+			changeGroupsToNames(linked, data);
 			LinearNode<Performance> current = linked.get(0);
 
 			while (!listSearched) {
@@ -205,5 +209,28 @@ public class DanceController implements Controller {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Replaces the names in "dances", if they appear in "data", with the names of
+	 * the people in the group.
+	 * 
+	 * @param dances
+	 * @param data
+	 */
+	private void changeGroupsToNames(LinkedList<LinearNode<Performance>> dances,
+			HashMap<String, ArrayList<String>> data) {
+		for (LinearNode<Performance> performances : dances) {
+			Performance performance = performances.getElement();
+			ArrayList<String> names = performance.getDancers();
+			for (int i = 0; i < names.size(); i++) {
+				if (data.containsKey(names.get(i))) {
+					ArrayList<String> newNames = data.get(names.get(i));
+					names.remove(i);
+					names.addAll(0, newNames);
+				}
+			}
+			performance.replaceDancerNames(names);
+		}
 	}
 }
