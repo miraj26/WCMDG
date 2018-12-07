@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Random;
 
 public class DanceController implements Controller {
 
@@ -70,9 +71,7 @@ public class DanceController implements Controller {
 
 		String clashes = "";
 		boolean successful = true;
-
 		try {
-			boolean listSearched = false;
 
 			runningOrder.newReadFile();
 			HashMap<String, ArrayList<String>> data = danceGroups.getData();
@@ -80,33 +79,14 @@ public class DanceController implements Controller {
 			changeGroupsToNames(linked, data);
 			LinearNode<Performance> current = linked.get(0);
 
-			while (!listSearched) {
-				ArrayList<String> dancers = current.getElement().getDancers();
-				LinearNode<Performance> nextInLine = current.getNext();
-				for (int i = 0; i < gaps; i++) {
-					if (linked.indexOf(nextInLine) != -1) { // Checks if nextInLine is null
-						ArrayList<String> nextDancers = nextInLine.getElement().getDancers();
-						for (String dancer : dancers) {
-							if (nextDancers.contains(dancer)) {
-								String message = "There is a clash with " + dancer + ", in "
-										+ nextInLine.getElement().getDanceName() + "\n ";
-								if (!clashes.contains(message)) {
-									clashes += message;
-								}
-								successful = false;
-							}
-						}
-						nextInLine = nextInLine.getNext();
-					}
-				}
-				if (current.getNext() != null) {
-					current = current.getNext();
-				} else {
-					listSearched = true;
-				}
+			clashes = checkFeasibility(linked, current, gaps);
+			if (!clashes.equals("")) {
+				successful = false;
 			}
 
-		} catch (FileNotFoundException e) {
+		} catch (
+
+		FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -120,95 +100,46 @@ public class DanceController implements Controller {
 	@Override
 	public String generateRunningOrder(int gaps) {
 		// TODO Auto-generated method stub
-
-		LinkedList<LinearNode<Performance>> runningOrder = new LinkedList<>(); // final
-		String runningOrderList = "";
+		LinkedList<LinearNode<Performance>> runningOrder = new LinkedList<>();
+		Random rand = new Random();
 		boolean completed = false;
+		String result = "";
 
 		try {
 			dances.newReadFile();
-			ArrayList<Performance> performances = dances.getPerformances();
-			ArrayList<Performance> temp = new ArrayList<>();
-			ArrayList<Integer> indexInList = new ArrayList<>();
-
-			runningOrder.addFirst(new LinearNode<Performance>(performances.get(0)));
-			indexInList.add(0);
-
-			while (!completed) {
-				for (Performance performance : performances) {
-					boolean success = true;
-					if (!indexInList.contains(performances.indexOf(performance))) {
-						ArrayList<String> namesChecking = performance.getDancers();
-						for (int i = 0; i < gaps; i++) {
-							int index = runningOrder.size() - i - 1;
-							if (index >= 0) {
-								ArrayList<String> namesInList = runningOrder.get(index).getElement().getDancers();
-								for (String name : namesInList) {
-									if (namesChecking.contains(name)) {
-										success = false;
-									}
-								}
-							}
-						}
-						if (success) {
-							indexInList.add(performances.indexOf(performance));
-							runningOrder.addLast(new LinearNode<Performance>(performance));
-						} else {
-							temp.add(performance);
-						}
-					}
-				}
-				if (!temp.isEmpty()) {
-					for (Performance performance : temp) {
-						boolean success = true;
-						ArrayList<String> namesChecking = performance.getDancers();
-						for (int i = 0; i < gaps; i++) {
-							int index = runningOrder.size() - i - 1;
-							if (index >= 0) {
-								ArrayList<String> namesInList = runningOrder.get(index).getElement().getDancers();
-								for (String name : namesInList) {
-									if (namesChecking.contains(name)) {
-										success = false;
-									}
-								}
-							}
-						}
-						if (success) {
-							indexInList.add(performances.indexOf(performance));
-							runningOrder.addLast(new LinearNode<Performance>(performance));
-						}
-					}
-				}
-
-				if (checkFeasibilityOfRunningOrder("danceShowData_dances.csv", gaps)
-						.equals("Running Order is valid.")) {
-					completed = true;
-				}
-//				if (runningOrder.size() == 36) {
-//					completed = true;
-//				}
-
-				if (!completed) {
-					return "Running order cannot be generated.";
-				}
-
-			}
-
-			Iterator<LinearNode<Performance>> iterator = runningOrder.listIterator();
-			int i = 1;
-			while (iterator.hasNext()) {
-				runningOrderList += i + ": " + iterator.next().getElement().getDancers() + "\n";
-				i++;
-			}
-
-			return runningOrderList;
-
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		LinkedList<LinearNode<Performance>> linked = dances.getLinkedList();
+		// LinearNode<Performance> current = linked.get(0);
 
-		return null;
+		while (!completed) {
+			while (runningOrder.size() != linked.size()) {
+				int index = rand.nextInt(linked.size());
+				if (!runningOrder.contains(linked.get(index))) {
+					runningOrder.add(linked.get(index));
+					String check = checkFeasibility(runningOrder, runningOrder.getFirst(), gaps);
+					if (!check.equals("")) {
+						runningOrder.removeLast();
+					}
+				}
+			}
+			// Check if completed .. if so then completed = true
+			String clashes = checkFeasibility(runningOrder, runningOrder.getFirst(), gaps);
+			System.out.println(clashes);
+			if (clashes.equals("")) {
+				completed = true;
+			}
+		}
+		if (completed) {
+			for (int i = 0; i < runningOrder.size(); i++) {
+				result += i + ": " + runningOrder.get(i).getElement().getDanceName().toString() + "\n";
+			}
+		}
+
+		return result;
+
 	}
 
 	/**
@@ -232,5 +163,36 @@ public class DanceController implements Controller {
 			}
 			performance.replaceDancerNames(names);
 		}
+	}
+
+	private String checkFeasibility(LinkedList<LinearNode<Performance>> linked, LinearNode<Performance> current,
+			int gaps) {
+		String clashes = "";
+		boolean listSearched = false;
+		while (!listSearched) {
+			ArrayList<String> dancers = current.getElement().getDancers();
+			LinearNode<Performance> nextInLine = current.getNext();
+			for (int i = 0; i < gaps; i++) {
+				if (linked.indexOf(nextInLine) != -1) { // Checks if nextInLine is null
+					ArrayList<String> nextDancers = nextInLine.getElement().getDancers();
+					for (String dancer : dancers) {
+						if (nextDancers.contains(dancer)) {
+							String message = "There is a clash with " + dancer + ", in "
+									+ nextInLine.getElement().getDanceName() + "\n ";
+							if (!clashes.contains(message)) {
+								clashes += message;
+							}
+						}
+					}
+					nextInLine = nextInLine.getNext();
+				}
+			}
+			if (current.getNext() != null) {
+				current = current.getNext();
+			} else {
+				listSearched = true;
+			}
+		}
+		return clashes;
 	}
 }
