@@ -6,6 +6,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.Scanner;
 
 public class DanceController implements Controller {
 
@@ -97,6 +98,10 @@ public class DanceController implements Controller {
 		}
 	}
 
+	/**
+	 * Random runningOrder. For each clash remove - add to another list. Add temp
+	 * list items into runningOrder one at a time, checking feasibility.
+	 */
 	@Override
 	public String generateRunningOrder(int gaps) {
 		// TODO Auto-generated method stub
@@ -113,28 +118,51 @@ public class DanceController implements Controller {
 		}
 		LinkedList<LinearNode<Performance>> linked = dances.getLinkedList();
 		// LinearNode<Performance> current = linked.get(0);
+		while (runningOrder.size() != linked.size()) {
+			int index = rand.nextInt(linked.size());
+			runningOrder.add(linked.get(index));
+		}
 
 		while (!completed) {
-			while (runningOrder.size() != linked.size()) {
-				int index = rand.nextInt(linked.size());
-				if (!runningOrder.contains(linked.get(index))) {
-					runningOrder.add(linked.get(index));
-					String check = checkFeasibility(runningOrder, runningOrder.getFirst(), gaps);
-					if (!check.equals("")) {
-						runningOrder.removeLast();
+			// System.out.println("Loop");
+			linked.clear();
+			String feasibility = checkFeasibility(runningOrder, runningOrder.getFirst(), gaps);
+			if (feasibility.equals("")) {
+				completed = true;
+				result = "Successful";
+			} else {
+				ArrayList<String> clashes = new ArrayList<String>();
+				Scanner scanner = new Scanner(feasibility);
+				while (scanner.hasNextLine()) {
+					String line = scanner.nextLine();
+					String[] newLine = line.replaceAll("There is a clash with ", ",").replaceAll(" in", "").split(",");
+					for (int i = 0; i < newLine.length; i += 2) {
+						clashes.add(newLine[i]);
 					}
 				}
-			}
-			// Check if completed .. if so then completed = true
-			String clashes = checkFeasibility(runningOrder, runningOrder.getFirst(), gaps);
-			System.out.println(clashes);
-			if (clashes.equals("")) {
-				completed = true;
-			}
-		}
-		if (completed) {
-			for (int i = 0; i < runningOrder.size(); i++) {
-				result += i + ": " + runningOrder.get(i).getElement().getDanceName().toString() + "\n";
+				for (String clash : clashes) {
+					for (int i = 0; i < runningOrder.size(); i++) {
+						if (runningOrder.get(i).getElement().getDanceName().contains(clash)) {
+							linked.add(runningOrder.get(i));
+							runningOrder.remove(i);
+						}
+					}
+				}
+				for (LinearNode<Performance> performance : linked) {
+					for (int i = 0; i < runningOrder.size(); i++) {
+						boolean added = false;
+						if (!added) {
+							runningOrder.add(i, performance);
+							if (!checkFeasibility(runningOrder, runningOrder.getFirst(), gaps).equals("")) {
+								runningOrder.remove(performance);
+							}
+							else {
+								linked.remove(performance);
+								added = true;
+							}
+						}
+					}
+				}
 			}
 		}
 
