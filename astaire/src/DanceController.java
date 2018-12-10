@@ -2,8 +2,6 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.Scanner;
@@ -118,18 +116,29 @@ public class DanceController implements Controller {
 		}
 		LinkedList<LinearNode<Performance>> linked = dances.getLinkedList();
 		// LinearNode<Performance> current = linked.get(0);
+
+		ArrayList<Integer> addedToList = new ArrayList<>();
 		while (runningOrder.size() != linked.size()) {
 			int index = rand.nextInt(linked.size());
-			runningOrder.add(linked.get(index));
+			if (!addedToList.contains(index)) {
+				runningOrder.add(linked.get(index));
+				addedToList.add(index);
+				if (runningOrder.size() > 1) { // Checks if added element is not first in the list
+					runningOrder.get(runningOrder.size() - 2).setNext(linked.get(index));
+				}
+			}
+			runningOrder.getLast().setNext(null);
 		}
 
+		linked.clear();
+
 		while (!completed) {
-			// System.out.println("Loop");
-			linked.clear();
 			String feasibility = checkFeasibility(runningOrder, runningOrder.getFirst(), gaps);
-			if (feasibility.equals("")) {
+			if (feasibility.equals("")) { // and linked.isEmpty()
 				completed = true;
-				result = "Successful";
+				for (LinearNode<Performance> performance : runningOrder) {
+					result += performance.getElement().getDanceName() + "\n";
+				}
 			} else {
 				ArrayList<String> clashes = new ArrayList<String>();
 				Scanner scanner = new Scanner(feasibility);
@@ -140,34 +149,55 @@ public class DanceController implements Controller {
 						clashes.add(newLine[i]);
 					}
 				}
+				scanner.close();
 				for (String clash : clashes) {
 					for (int i = 0; i < runningOrder.size(); i++) {
 						if (runningOrder.get(i).getElement().getDanceName().contains(clash)) {
 							linked.add(runningOrder.get(i));
 							runningOrder.remove(i);
+							if (i > 0 && i < runningOrder.size()) {
+								runningOrder.get(i - 1).setNext(runningOrder.get(i));
+							}
 						}
 					}
 				}
+				ArrayList<LinearNode<Performance>> addedPerformances = new ArrayList<>();
 				for (LinearNode<Performance> performance : linked) {
-					for (int i = 0; i < runningOrder.size(); i++) {
-						boolean added = false;
+					boolean added = false;
+					int listSize = runningOrder.size();
+					for (int i = 0; i < listSize; i++) {
 						if (!added) {
 							runningOrder.add(i, performance);
-							if (!checkFeasibility(runningOrder, runningOrder.getFirst(), gaps).equals("")) {
-								runningOrder.remove(performance);
+
+							if (i == 0) {
+								runningOrder.getFirst().setNext(runningOrder.get(1));
+
+							} else {
+								runningOrder.get(i - 1).setNext(runningOrder.get(i)); // Sets the "next" element of the
+																						// previous node
+								runningOrder.get(i).setNext(runningOrder.get(i + 1));
+								runningOrder.getLast().setNext(null);
 							}
-							else {
-								linked.remove(performance);
+							// System.out.println("List element: " + i);
+							if (!checkFeasibility(runningOrder, runningOrder.getFirst(), gaps).equals("")) {
+								runningOrder.remove(i);
+								// runningOrder.getLast().setNext(null);
+								if (i > 0) {
+									runningOrder.get(i - 1).setNext(runningOrder.get(i));
+								}
+							} else {
+								addedPerformances.add(performance);
 								added = true;
 							}
 						}
 					}
 				}
+				for (LinearNode<Performance> performance : addedPerformances) {
+					linked.remove(performance);
+				}
 			}
 		}
-
 		return result;
-
 	}
 
 	/**
