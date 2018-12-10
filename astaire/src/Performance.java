@@ -3,7 +3,9 @@ import java.util.ArrayList;
  * This class stores the information about each performance,
  * storing the names of each dancer into an ArrayList.
  * 
- * @author Miraj Shah, Jacob Williams, Devin Shingadia
+ * @author Miraj Shah
+ * @author Devin Shingadia
+ * @author Jacob Williams
  *
  */
 public class Performance {
@@ -41,7 +43,10 @@ public class Performance {
 	public ArrayList<String> getDancers(){
 		return dancers;
 	}
-	
+	/**
+	 * Replaces {@link #dancers} with dancerNames.
+	 * @param dancerNames <code>ArrayList</code> of type String containing the names of the dancers.
+	 */
 	public void replaceDancerNames(ArrayList<String> dancerNames) {
 		dancers = dancerNames;
 	}

@@ -1,9 +1,12 @@
 /**
  * The class creates each LinearNode, holding elements of a certain type
  * to be put into a linked list.
- * @author Miraj Shah, Jacob Williams, Devin Shingadia
+ * 
+ * @author Miraj Shah
+ * @author Devin Shingadia
+ * @author Jacob Williams
  *
- * @param <T>
+ * @param <T> Type variable.
  */
 public class LinearNode<T> {
 	/**

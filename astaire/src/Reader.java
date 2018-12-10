@@ -2,14 +2,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.Scanner;
 
 /**
  * This class reads the .csv file and stores it into an array.
  * 
- * @author Jacob Williams, Miraj Shah, Devin Shingadia
+ * @author Miraj Shah
+ * @author Devin Shingadia
+ * @author Jacob Williams
  *
  */
 public class Reader {
@@ -44,9 +45,11 @@ public class Reader {
 	 * Holds an ArrayList of Performance.
 	 */
 	private ArrayList<Performance> performances;
-	
-	private Hashtable<String, ArrayList<String>> dance;
 
+	/**
+	 * Create a <code>Reader</code> and automatically assign values.
+	 * @param pathname a <code>String</code> of the pathname for the intended file to be read.
+	 */
 	public Reader(String pathname) {
 		file = new File(pathname);
 		dances = new HashMap<String, ArrayList<String>>();
@@ -54,14 +57,13 @@ public class Reader {
 		valueList = new ArrayList<>();
 		linkedList = new LinkedList<>();
 		performances = new ArrayList<>();
-		dance = new Hashtable<>();
 	}
 
 	/**
+	 * Stores the dances and dance names in a HashMap, read from the file.
 	 * @throws FileNotFoundException
-	 * 
 	 */
-	public void readFile() throws FileNotFoundException {
+	public void readFileIntoHashMap() throws FileNotFoundException {
 		scanner = new Scanner(file);
 		while (scanner.hasNextLine()) {
 			String line = scanner.nextLine();
@@ -79,7 +81,11 @@ public class Reader {
 		}
 	}
 
-	public void newReadFile() throws FileNotFoundException {
+	/**
+	 *  Stores the dances and dance names in a LinkedList, read from the file.
+	 * @throws FileNotFoundException
+	 */
+	public void readFileIntoLinkedList() throws FileNotFoundException {
 		scanner = new Scanner(file);
 		LinearNode<Performance> previous = null;
 		scanner.nextLine();
@@ -153,24 +159,4 @@ public class Reader {
 	public ArrayList<Performance> getPerformances() {
 		return performances;
 	}
-
-	public void readFileHash() throws FileNotFoundException {
-		scanner = new Scanner(file);
-		scanner.nextLine();
-		while (scanner.hasNextLine()) {
-			String line = scanner.nextLine();
-			String[] temp = line.split("\t");
-			String[] dancerName = temp[1].split(",");
-			ArrayList<String> names = new ArrayList<>();
-			for (int i = 0; i < dancerName.length; i++) {
-				names.add(dancerName[i].trim());
-			}
-			dance.put(temp[0].trim(), names);
-		}
-	}
-
-	public Hashtable<String, ArrayList<String>> getHashtable(){
-		return dance;
-	}
-	
 }

@@ -6,22 +6,49 @@ import java.util.LinkedList;
 import java.util.Random;
 import java.util.Scanner;
 
+/**
+ * Represents the functionality for the TUI
+ * 
+ * @author Miraj Shah
+ * @author Devin Shingadia
+ * @author Jacob Williams
+ */
 public class DanceController implements Controller {
 
+	/**
+	 * Holds data referring to a file showing dance group members.
+	 * 
+	 * @see #DanceController()
+	 * @see #listAllDancersIn(String)
+	 * @see #listAllDancesAndPerformers()
+	 * @see #checkFeasibilityOfRunningOrder(String, int)
+	 */
 	private Reader danceGroups;
+
+	/**
+	 * Holds data referring to a file showing dances.
+	 * 
+	 * @see #DanceController()
+	 * @see #listAllDancesAndPerformers()
+	 * @see #generateRunningOrder(int)
+	 */
 	private Reader dances;
 
+	/**
+	 * Create a <code>DanceController</code> and automatically reads the data from
+	 * the required files.
+	 */
 	public DanceController() {
 		danceGroups = new Reader("files\\danceShowData_danceGroups.csv");
 		try {
-			danceGroups.readFile();
+			danceGroups.readFileIntoHashMap();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		dances = new Reader("files\\danceShowData_dances.csv");
 		try {
-			dances.readFile();
+			dances.readFileIntoHashMap();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -72,7 +99,7 @@ public class DanceController implements Controller {
 		boolean successful = true;
 		try {
 
-			runningOrder.newReadFile();
+			runningOrder.readFileIntoLinkedList();
 			HashMap<String, ArrayList<String>> data = danceGroups.getData();
 			LinkedList<LinearNode<Performance>> linked = runningOrder.getLinkedList();
 			changeGroupsToNames(linked, data);
@@ -96,10 +123,6 @@ public class DanceController implements Controller {
 		}
 	}
 
-	/**
-	 * Random runningOrder. For each clash remove - add to another list. Add temp
-	 * list items into runningOrder one at a time, checking feasibility.
-	 */
 	@Override
 	public String generateRunningOrder(int gaps) {
 		// TODO Auto-generated method stub
@@ -109,7 +132,7 @@ public class DanceController implements Controller {
 		String result = "";
 
 		try {
-			dances.newReadFile();
+			dances.readFileIntoLinkedList();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -204,17 +227,17 @@ public class DanceController implements Controller {
 	 * Replaces the names in "dances", if they appear in "data", with the names of
 	 * the people in the group.
 	 * 
-	 * @param dances
-	 * @param data
+	 * @param dances a <code>LinkedList</code> of LinearNodes of type Performance, containing data about each dance.
+	 * @param group a <code>HashMap</code> with a String key and ArrayList value, containing data about who is in each group.
 	 */
 	private void changeGroupsToNames(LinkedList<LinearNode<Performance>> dances,
-			HashMap<String, ArrayList<String>> data) {
+			HashMap<String, ArrayList<String>> group) {
 		for (LinearNode<Performance> performances : dances) {
 			Performance performance = performances.getElement();
 			ArrayList<String> names = performance.getDancers();
 			for (int i = 0; i < names.size(); i++) {
-				if (data.containsKey(names.get(i))) {
-					ArrayList<String> newNames = data.get(names.get(i));
+				if (group.containsKey(names.get(i))) {
+					ArrayList<String> newNames = group.get(names.get(i));
 					names.remove(i);
 					names.addAll(0, newNames);
 				}
@@ -223,8 +246,16 @@ public class DanceController implements Controller {
 		}
 	}
 
-	private String checkFeasibility(LinkedList<LinearNode<Performance>> linked, LinearNode<Performance> current,
+	/**
+	 * Checks whether the given LinkedList is in a suitable order, and returns which dances have clashed otherwise.
+	 * @param linked a <code>LinkedList</code> of LinearNodes of type Performance, containing the proposed running order.
+	 * @param first a <code>LinearNode</code> of type Performance containing the first element in the LinkedList.
+	 * @param gaps an <code>int</code> showing the number of gaps there must be between a recurrence of a dancer.
+	 * @return <code>String</code> containing which dances have clashed, or an empty String depending on if a clash/es occur.
+	 */
+	private String checkFeasibility(LinkedList<LinearNode<Performance>> linked, LinearNode<Performance> first,
 			int gaps) {
+		LinearNode<Performance> current = first;
 		String clashes = "";
 		boolean listSearched = false;
 		while (!listSearched) {
