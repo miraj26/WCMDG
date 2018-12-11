@@ -125,7 +125,6 @@ public class DanceController implements Controller {
 
 	@Override
 	public String generateRunningOrder(int gaps) {
-		// TODO Auto-generated method stub
 		LinkedList<LinearNode<Performance>> runningOrder = new LinkedList<>();
 		Random rand = new Random();
 		boolean completed = false;
@@ -139,7 +138,6 @@ public class DanceController implements Controller {
 		}
 		LinkedList<LinearNode<Performance>> linked = dances.getLinkedList();
 		// LinearNode<Performance> current = linked.get(0);
-
 		ArrayList<Integer> addedToList = new ArrayList<>();
 		while (runningOrder.size() != linked.size()) {
 			int index = rand.nextInt(linked.size());
@@ -157,29 +155,45 @@ public class DanceController implements Controller {
 
 		while (!completed) {
 			String feasibility = checkFeasibility(runningOrder, runningOrder.getFirst(), gaps);
-			if (feasibility.equals("")) { // and linked.isEmpty()
+			System.out.println(feasibility);
+			if (feasibility.equals("") && linked.isEmpty()) {
 				completed = true;
 				for (LinearNode<Performance> performance : runningOrder) {
 					result += performance.getElement().getDanceName() + "\n";
 				}
+			} else if (feasibility.equals("") && !linked.isEmpty()) {
+				System.out.println("CHECKs");
+				runningOrder = fillList(runningOrder, linked);
+				linked.clear();
 			} else {
 				ArrayList<String> clashes = new ArrayList<String>();
 				Scanner scanner = new Scanner(feasibility);
 				while (scanner.hasNextLine()) {
 					String line = scanner.nextLine();
-					String[] newLine = line.replaceAll("There is a clash with ", ",").replaceAll(" in", "").split(",");
-					for (int i = 0; i < newLine.length; i += 2) {
-						clashes.add(newLine[i]);
+					String[] newLine = line.replaceAll("There is a clash with ", ",").replaceFirst(" in", "")
+							.split(",");
+					for (int i = 2; i < newLine.length; i += 2) {
+						if (!newLine[i].trim().equals("") && !clashes.contains(newLine[i].trim())) {
+							clashes.add(newLine[i].trim());
+						}
 					}
 				}
 				scanner.close();
-				for (String clash : clashes) {
-					for (int i = 0; i < runningOrder.size(); i++) {
-						if (runningOrder.get(i).getElement().getDanceName().contains(clash)) {
-							linked.add(runningOrder.get(i));
-							runningOrder.remove(i);
-							if (i > 0 && i < runningOrder.size()) {
-								runningOrder.get(i - 1).setNext(runningOrder.get(i));
+				boolean noClashes = false;
+				if (!noClashes) {
+					for (String clash : clashes) {
+						for (int i = 0; i < runningOrder.size(); i++) {
+							// System.out.println("Clash: " + clash);
+							if (runningOrder.get(i).getElement().getDanceName().contains(clash)) {
+								// System.out.println("WOKRING?");
+								linked.add(runningOrder.get(i));
+								runningOrder.remove(i);
+								if (i > 0 && i < runningOrder.size()) {
+									runningOrder.get(i - 1).setNext(runningOrder.get(i));
+								}
+								if (checkFeasibility(runningOrder, runningOrder.getFirst(), gaps).equals("")) {
+									noClashes = true;
+								}
 							}
 						}
 					}
@@ -209,6 +223,7 @@ public class DanceController implements Controller {
 									runningOrder.get(i - 1).setNext(runningOrder.get(i));
 								}
 							} else {
+								System.out.println("ADDED");
 								addedPerformances.add(performance);
 								added = true;
 							}
@@ -227,8 +242,10 @@ public class DanceController implements Controller {
 	 * Replaces the names in "dances", if they appear in "data", with the names of
 	 * the people in the group.
 	 * 
-	 * @param dances a <code>LinkedList</code> of LinearNodes of type Performance, containing data about each dance.
-	 * @param group a <code>HashMap</code> with a String key and ArrayList value, containing data about who is in each group.
+	 * @param dances a <code>LinkedList</code> of LinearNodes of type Performance,
+	 *               containing data about each dance.
+	 * @param group  a <code>HashMap</code> with a String key and ArrayList value,
+	 *               containing data about who is in each group.
 	 */
 	private void changeGroupsToNames(LinkedList<LinearNode<Performance>> dances,
 			HashMap<String, ArrayList<String>> group) {
@@ -247,11 +264,17 @@ public class DanceController implements Controller {
 	}
 
 	/**
-	 * Checks whether the given LinkedList is in a suitable order, and returns which dances have clashed otherwise.
-	 * @param linked a <code>LinkedList</code> of LinearNodes of type Performance, containing the proposed running order.
-	 * @param first a <code>LinearNode</code> of type Performance containing the first element in the LinkedList.
-	 * @param gaps an <code>int</code> showing the number of gaps there must be between a recurrence of a dancer.
-	 * @return <code>String</code> containing which dances have clashed, or an empty String depending on if a clash/es occur.
+	 * Checks whether the given LinkedList is in a suitable order, and returns which
+	 * dances have clashed otherwise.
+	 * 
+	 * @param linked a <code>LinkedList</code> of LinearNodes of type Performance,
+	 *               containing the proposed running order.
+	 * @param first  a <code>LinearNode</code> of type Performance containing the
+	 *               first element in the LinkedList.
+	 * @param gaps   an <code>int</code> showing the number of gaps there must be
+	 *               between a recurrence of a dancer.
+	 * @return <code>String</code> containing which dances have clashed, or an empty
+	 *         String depending on if a clash/es occur.
 	 */
 	private String checkFeasibility(LinkedList<LinearNode<Performance>> linked, LinearNode<Performance> first,
 			int gaps) {
@@ -284,4 +307,24 @@ public class DanceController implements Controller {
 		}
 		return clashes;
 	}
+
+	private LinkedList<LinearNode<Performance>> fillList(LinkedList<LinearNode<Performance>> empty,
+			LinkedList<LinearNode<Performance>> full) {
+		int maxSize = empty.size() + full.size();
+		Random rand = new Random();
+		ArrayList<Integer> addedToList = new ArrayList<>();
+		while (empty.size() != maxSize) {
+			int index = rand.nextInt(full.size());
+			if (!addedToList.contains(index)) {
+				empty.add(full.get(index));
+				addedToList.add(index);
+				if (empty.size() > 1) { // Checks if added element is not first in the list
+					empty.get(empty.size() - 2).setNext(full.get(index));
+				}
+			}
+			empty.getLast().setNext(null);
+		}
+		return empty;
+	}
+
 }
