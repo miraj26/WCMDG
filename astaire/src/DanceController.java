@@ -169,6 +169,7 @@ public class DanceController implements Controller {
 				ArrayList<String> clashes = new ArrayList<String>();
 				Scanner scanner = new Scanner(feasibility);
 				while (scanner.hasNextLine()) {
+					System.out.println("TEST");
 					String line = scanner.nextLine();
 					String[] newLine = line.replaceAll("There is a clash with ", ",").replaceFirst(" in", "")
 							.split(",");
@@ -188,6 +189,7 @@ public class DanceController implements Controller {
 								// System.out.println("WOKRING?");
 								linked.add(runningOrder.get(i));
 								runningOrder.remove(i);
+								runningOrder.getLast().setNext(null);
 								if (i > 0 && i < runningOrder.size()) {
 									runningOrder.get(i - 1).setNext(runningOrder.get(i));
 								}
@@ -203,6 +205,8 @@ public class DanceController implements Controller {
 					boolean added = false;
 					int listSize = runningOrder.size();
 					for (int i = 0; i < listSize; i++) {
+						// THIS LOOP IS FOREVER REPEATED
+						System.out.println("LOOPING FOREVER");
 						if (!added) {
 							runningOrder.add(i, performance);
 
@@ -213,7 +217,7 @@ public class DanceController implements Controller {
 								runningOrder.get(i - 1).setNext(runningOrder.get(i)); // Sets the "next" element of the
 																						// previous node
 								runningOrder.get(i).setNext(runningOrder.get(i + 1));
-								runningOrder.getLast().setNext(null);
+								// runningOrder.getLast().setNext(null);
 							}
 							// System.out.println("List element: " + i);
 							if (!checkFeasibility(runningOrder, runningOrder.getFirst(), gaps).equals("")) {
@@ -229,6 +233,7 @@ public class DanceController implements Controller {
 							}
 						}
 					}
+					runningOrder.getLast().setNext(null);
 				}
 				for (LinearNode<Performance> performance : addedPerformances) {
 					linked.remove(performance);
@@ -282,6 +287,7 @@ public class DanceController implements Controller {
 		String clashes = "";
 		boolean listSearched = false;
 		while (!listSearched) {
+			// System.out.println("check feasibility");
 			ArrayList<String> dancers = current.getElement().getDancers();
 			LinearNode<Performance> nextInLine = current.getNext();
 			for (int i = 0; i < gaps; i++) {
