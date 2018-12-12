@@ -105,8 +105,7 @@ public class DanceController implements Controller {
 
 	@Override
 	public String checkFeasibilityOfRunningOrder(String filename, int gaps) {
-		// Reader runningOrder = new Reader("files\\" + filename);
-		Reader runningOrder = new Reader("files\\danceShowData_runningOrder.csv");
+		Reader runningOrder = new Reader("files\\" + filename);
 
 		String clashes = "";
 		boolean successful = true;
@@ -162,9 +161,8 @@ public class DanceController implements Controller {
 	@Override
 	public String generateRunningOrder(int gaps) {
 		LinkedList<LinearNode<Performance>> runningOrder = new LinkedList<>();
-		Random rand = new Random();
 		boolean completed = false;
-		String result = "";
+		String result = "The following is a feasible running order for the given dances: \n\n";
 
 		try {
 			dancesSubset.readFileIntoLinkedList();
@@ -175,39 +173,23 @@ public class DanceController implements Controller {
 		HashMap<String, ArrayList<String>> data = danceGroups.getData();
 		LinkedList<LinearNode<Performance>> linked = dancesSubset.getLinkedList();
 		changeGroupsToNames(linked, data);
-		// LinearNode<Performance> current = linked.get(0);
-		ArrayList<Integer> addedToList = new ArrayList<>();
-		while (runningOrder.size() < linked.size()) {
-			int index = rand.nextInt(linked.size());
-			if (!addedToList.contains(index)) {
-				runningOrder.add(linked.get(index));
-				addedToList.add(index);
-				if (runningOrder.size() > 1) { // Checks if added element is not first in the list
-					runningOrder.get(runningOrder.size() - 2).setNext(linked.get(index));
-				}
-			}
-			runningOrder.getLast().setNext(null);
-		}
-
+		fillList(runningOrder, linked);
 		linked.clear();
 
 		while (!completed) {
 			String feasibility = checkFeasibility(runningOrder, runningOrder.getFirst(), gaps);
-			// System.out.println(feasibility);
 			if (feasibility.equals("") && linked.isEmpty()) {
 				completed = true;
 				for (LinearNode<Performance> performance : runningOrder) {
 					result += performance.getElement().getDanceName() + "\n";
 				}
 			} else if (feasibility.equals("") && !linked.isEmpty()) {
-				System.out.println("CHECKs");
 				runningOrder = fillList(runningOrder, linked);
 				linked.clear();
 			} else {
 				ArrayList<String> clashes = new ArrayList<String>();
 				Scanner scanner = new Scanner(feasibility);
 				while (scanner.hasNextLine()) {
-					// System.out.println("TEST");
 					String line = scanner.nextLine();
 					String[] newLine = line.replaceAll("There is a clash with ", ",").replaceFirst(" in", "")
 							.split(",");
@@ -217,15 +199,12 @@ public class DanceController implements Controller {
 						}
 					}
 				}
-				System.out.println(clashes);
 				scanner.close();
 				boolean noClashes = false;
 				if (!noClashes) {
 					for (String clash : clashes) {
 						for (int i = 0; i < runningOrder.size(); i++) {
-							// System.out.println("Clash: " + clash);
 							if (runningOrder.get(i).getElement().getDanceName().contains(clash)) {
-								// System.out.println("WOKRING?");
 								linked.add(runningOrder.get(i));
 								runningOrder.remove(i);
 								runningOrder.getLast().setNext(null);
@@ -244,8 +223,6 @@ public class DanceController implements Controller {
 					boolean added = false;
 					int listSize = runningOrder.size();
 					for (int i = 0; i < listSize; i++) {
-						// THIS LOOP IS FOREVER REPEATED
-						// System.out.println("LOOPING FOREVER");
 						if (!added) {
 							runningOrder.add(i, performance);
 
@@ -256,17 +233,13 @@ public class DanceController implements Controller {
 								runningOrder.get(i - 1).setNext(runningOrder.get(i)); // Sets the "next" element of the
 																						// previous node
 								runningOrder.get(i).setNext(runningOrder.get(i + 1));
-								// runningOrder.getLast().setNext(null);
 							}
-							// System.out.println("List element: " + i);
 							if (!checkFeasibility(runningOrder, runningOrder.getFirst(), gaps).equals("")) {
 								runningOrder.remove(i);
-								// runningOrder.getLast().setNext(null);
 								if (i > 0) {
 									runningOrder.get(i - 1).setNext(runningOrder.get(i));
 								}
 							} else {
-								System.out.println("ADDED");
 								addedPerformances.add(performance);
 								added = true;
 							}
@@ -339,7 +312,6 @@ public class DanceController implements Controller {
 		String clashes = "";
 		boolean listSearched = false;
 		while (!listSearched) {
-			// System.out.println("check feasibility");
 			ArrayList<String> dancers = current.getElement().getDancers();
 			LinearNode<Performance> nextInLine = current.getNext();
 			for (int i = 0; i < gaps; i++) {
@@ -366,6 +338,12 @@ public class DanceController implements Controller {
 		return clashes;
 	}
 
+	/**
+	 * Elements from "full" are added one by one to the start of "empty".
+	 * @param empty a <code>LinkedList</code> of LinearNode of type Performance, where the data from full is to be added.
+	 * @param full a <code>LinkedList</code> of LinearNode of type Performance, containing data to be put into the empty list.
+	 * @return <code>LinkedList</code> containing a concatenation of elements from both LinkedLists.
+	 */
 	private LinkedList<LinearNode<Performance>> fillList(LinkedList<LinearNode<Performance>> empty,
 			LinkedList<LinearNode<Performance>> full) {
 		int maxSize = empty.size() + full.size();
@@ -377,7 +355,6 @@ public class DanceController implements Controller {
 				empty.addFirst(full.get(index));
 				addedToList.add(index);
 				if (empty.size() > 1) { // Checks if added element is not first in the list
-					// empty.get(empty.size() - 2).setNext(full.get(index));
 					empty.getFirst().setNext(empty.get(1));
 				}
 			}

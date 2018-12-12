@@ -94,9 +94,7 @@ public class Reader {
 			String[] temp = line.split("\t");
 			Performance performance = new Performance(temp[0].trim());
 			String[] dancerName = temp[1].split(",");
-			// ArrayList<String> names = new ArrayList<>();
 			for (int i = 0; i < dancerName.length; i++) {
-				// names.add(dancerName[i]);
 				performance.addDancer(dancerName[i].trim());
 				performance.addDancerToHashSet(dancerName[i].trim());
 			}
