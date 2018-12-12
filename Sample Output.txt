@@ -77,8 +77,15 @@ Checks the feasibility of a given running order...
 Enter the name of the CSV file with the proposed running order:
 danceShowData_runningOrder.csv
 Enter the required number of gaps between dances:
-3
-There is a clash with Alicia, in Thoroughly Modern Milly
+4
+There is a clash with Lily, in Doe-Re-Mi
+ There is a clash with Betty, in Doe-Re-Mi
+ There is a clash with Megan, in Doe-Re-Mi
+ There is a clash with Moria, in Doe-Re-Mi
+ There is a clash with Felicity, in Doe-Re-Mi
+ There is a clash with Susan, in Doe-Re-Mi
+ There is a clash with Chris, in Doe-Re-Mi
+ There is a clash with Alicia, in Thoroughly Modern Milly
  There is a clash with Lucia, in Doe-Re-Mi
  There is a clash with Cathy, in Doe-Re-Mi
  There is a clash with April, in Doe-Re-Mi
@@ -93,6 +100,12 @@ There is a clash with Alicia, in Thoroughly Modern Milly
  There is a clash with Moria, in Make 'em Laugh
  There is a clash with Felicity, in Make 'em Laugh
  There is a clash with Susan, in Make 'em Laugh
+ There is a clash with Lucia, in Juvenile Tap
+ There is a clash with Cathy, in Juvenile Tap
+ There is a clash with April, in Juvenile Tap
+ There is a clash with Laura, in Juvenile Tap
+ There is a clash with Dora, in Juvenile Tap
+ There is a clash with Agnes, in Juvenile Tap
  There is a clash with Lily, in Bronze Tap
  There is a clash with Betty, in Bronze Tap
  There is a clash with Megan, in Bronze Tap
@@ -117,14 +130,14 @@ Enter the required number of gaps between dances:
 2
 The following is a feasible running order for the given dances: 
 
-Silver Tap
-Jazz Baby
-I Could Have Dance All Night
-Chicken Song
-Choo Choo Ch'boogie
-Bronze Tap
-Gold Tap
-Bye Bye Blackbird
+Gold Tap, performed by: [Christine, Jenny, Kathryn, Ada, Darrell, Alicia, Mavis]
+Choo Choo Ch'boogie, performed by: [Lauretta, Florence, Vivian, Ivy, Sally, Gwen, Arwen]
+Jazz Baby, performed by: [Marianne, Dorothy, Audrey, Ginger, Teresa]
+Bronze Tap, performed by: [Lily, Betty, Megan, Moria, Felicity, Susan]
+Silver Tap, performed by: [Lauretta, Florence, Vivian, Ivy, Sally, Gwen, Arwen]
+I Could Have Dance All Night, performed by: [Christine, Alicia, Darrell]
+Chicken Song, performed by: [Lucia, Cathy, April, Laura, Dora, Agnes, Jenny]
+Bye Bye Blackbird, performed by: [Flora, Anne, Lucy, Kate, Gwen, Jane, Mary, Donna, Fiona, Grace, Marianne, Dorothy, Audrey, Ginger, Teresa]
 
 
 Dance Show Programme Generator

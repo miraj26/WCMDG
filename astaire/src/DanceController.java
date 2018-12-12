@@ -181,7 +181,7 @@ public class DanceController implements Controller {
 			if (feasibility.equals("") && linked.isEmpty()) {
 				completed = true;
 				for (LinearNode<Performance> performance : runningOrder) {
-					result += performance.getElement().getDanceName() + "\n";
+					result += performance.getElement().getDanceName() + ", performed by: " + performance.getElement().getDancers() + "\n";
 				}
 			} else if (feasibility.equals("") && !linked.isEmpty()) {
 				runningOrder = fillList(runningOrder, linked);
