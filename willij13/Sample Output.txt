@@ -1,0 +1,173 @@
+
+Dance Show Programme Generator
+
+Enter the number associated with your chosen menu option.
+1: List all dancers in a dance
+2: List all dance numbers and the respective dancers
+3: Check the feasibility of a given running order
+4: Generate a running order
+5: Exit this application
+
+1
+Lists all dancers in a dance...
+Enter the name of the required dance:
+Juniors
+Juniors: Lily Betty Megan Moria Felicity Susan 
+
+Dance Show Programme Generator
+
+Enter the number associated with your chosen menu option.
+1: List all dancers in a dance
+2: List all dance numbers and the respective dancers
+3: Check the feasibility of a given running order
+4: Generate a running order
+5: Exit this application
+
+NotAGroup
+Cannot recognise the given command: NotAGroup.
+
+
+Dance Show Programme Generator
+
+Enter the number associated with your chosen menu option.
+1: List all dancers in a dance
+2: List all dance numbers and the respective dancers
+3: Check the feasibility of a given running order
+4: Generate a running order
+5: Exit this application
+
+2
+Lists all dance numbers and the respective dancers...
+ANY Dream Will Do: [Betty, Chris, Felicity, Lily, Megan, Moria, Susan]
+Alice in Disney Land: [Agnes, April, Betty, Cathy, Chris, Dora, Felicity, Laura, Lily, Lucia, Megan, Moria, Susan]
+All That Jazz: [Betty, Felicity, Lily, Megan, Moria, Susan]
+Blue Danube: [Abby, Aimee, Carrie, Danielle, June, Mae, May, Mindy, Molly, Sandy]
+Bronze Tap: [Agnes, Alicia, April, Cathy, Dora, Laura, Lucia]
+Bye Bye Blackbird  : [Christine, Jenny]
+Cell Block Tango: [Arwen, Darrell, Florence, Gwen, Ivy, Lauretta, Sally, Vivian]
+Charleston : [Ada, Alicia, Christine, Darrell, Jenny, Kathryn, Mavis]
+Chicken Song : [Ada, Alicia, Arwen, Christine, Darrell, Florence, Gwen, Ivy, Jenny, Kathryn, Lauretta, Mavis, Sally, Vivian]
+Choo Choo Ch'boogie: [Anne, Donna, Fiona, Flora, Grace, Gwen, Jane, Kate, Lucy, Mary]
+Dance Name: [Abby, Agnes, Aimee, April, Cathy, Danielle, Dora, Heather, June, Laura, Lucia, Mae, May, Molly]
+Do you Hear the People Sing  : [Anne, Donna, Fiona, Flora, Grace, Gwen, Jane, Kate, Lucy, Mary]
+Doe-Re-Mi  : [Agnes, April, Cathy, Dora, Laura, Lucia]
+Gold Tap: [Betty, Felicity, Lily, Megan, Moria, Susan]
+Good Morning: [Arwen, Florence, Gwen, Ivy, Lauretta, Sally, Vivian]
+I Could Have Dance All Night: [Ada, Alicia, Christine, Darrell, Jenny, Kathryn, Mavis]
+I Dreamed a Dream: [Alicia, Christine, Darrell]
+I Got Rhythm: [Agnes, April, Cathy, Dora, Jenny, Laura, Lucia]
+Jazz Baby    : [Audrey, Dorothy, Ginger, Marianne, Teresa]
+Jewish Wedding Song: [Anne, Audrey, Donna, Dorothy, Fiona, Flora, Ginger, Grace, Gwen, Jane, Kate, Lucy, Marianne, Mary, Teresa]
+Juvenile Tap: [Arwen, Florence, Gwen, Ivy, Lauretta, Sally, Vivian]
+Let's Pretend: [Mavis]
+Make 'em Laugh: [Agnes, April, Betty, Cathy, Chris, Dora, Felicity, Laura, Lily, Lucia, Megan, Moria, Susan]
+Masquerade: [Audrey, Dorothy, Ginger, Marianne, Teresa]
+Memory: [Audrey, Dorothy, Ginger, Marianne, Teresa]
+My Favourite Things : [Arwen, Betty, Felicity, Florence, Gwen, Ivy, Lauretta, Lily, Megan, Moria, Sally, Susan, Vivian]
+Silver Tap: [Arwen, Betty, Felicity, Florence, Gwen, Ivy, Lauretta, Lily, Megan, Moria, Sally, Susan, Vivian]
+Singing in the Rain: [Ada, Alicia, Arwen, Christine, Darrell, Florence, Gwen, Ivy, Jenny, Kathryn, Lauretta, Mavis, Sally, Vivian]
+Step In Time   : [Ada, Alicia, Anne, Christine, Darrell, Donna, Fiona, Flora, Grace, Gwen, Jane, Jenny, Kate, Kathryn, Lucy, Mary, Mavis]
+Supercalifragilisticexpialidocious: [Anne, Donna, Fiona, Flora, Grace, Gwen, Jane, Kate, Lucy, Mary]
+The Candy Man Can: [Mavis]
+The Music of the Night: [Arwen, Florence, Gwen, Ivy, Junior, Lauretta, Lucy, Molly, Sally, Vivian]
+The Tapioca : [Agnes, April, Cathy, Dora, Felicity, Laura, Lily, Lucia]
+Thoroughly Modern Milly: [Ada, Alicia, Anne, Christine, Darrell, Donna, Fiona, Flora, Grace, Gwen, Jane, Jenny, Kate, Kathryn, Lucy, Mary, Mavis]
+What a Feeling: [Ada, Alicia, Anne, Audrey, Christine, Darrell, Donna, Dorothy, Fiona, Flora, Ginger, Grace, Gwen, Jane, Jenny, Kate, Kathryn, Lucy, Marianne, Mary, Mavis, Teresa]
+Yankee Doodle  : [Abby, Ada, Agnes, Aimee, Alicia, Anne, April, Arwen, Audrey, Betty, Cathy, Christine, Danielle, Darrell, Donna, Dora, Dorothy, Felicity, Fiona, Flora, Florence, Ginger, Grace, Gwen, Gwen, Ivy, Jane, Jenny, June, Kate, Kathryn, Laura, Lauretta, Lily, Lucia, Lucy, Mae, Marianne, Mary, Mavis, May, Megan, Molly, Moria, Sally, Susan, Teresa, Vivian]
+
+
+Dance Show Programme Generator
+
+Enter the number associated with your chosen menu option.
+1: List all dancers in a dance
+2: List all dance numbers and the respective dancers
+3: Check the feasibility of a given running order
+4: Generate a running order
+5: Exit this application
+
+3
+Checks the feasibility of a given running order...
+Enter the name of the CSV file with the proposed running order:
+danceShowData_runningOrder.csv
+Enter the required number of gaps between dances:
+3
+There is a clash with Alicia, in Thoroughly Modern Milly
+ There is a clash with Lucia, in Doe-Re-Mi
+ There is a clash with Cathy, in Doe-Re-Mi
+ There is a clash with April, in Doe-Re-Mi
+ There is a clash with Laura, in Doe-Re-Mi
+ There is a clash with Dora, in Doe-Re-Mi
+ There is a clash with Agnes, in Doe-Re-Mi
+ There is a clash with Christine, in What a Feeling
+ There is a clash with Jenny, in What a Feeling
+ There is a clash with Lily, in Make 'em Laugh
+ There is a clash with Betty, in Make 'em Laugh
+ There is a clash with Megan, in Make 'em Laugh
+ There is a clash with Moria, in Make 'em Laugh
+ There is a clash with Felicity, in Make 'em Laugh
+ There is a clash with Susan, in Make 'em Laugh
+ There is a clash with Lily, in Bronze Tap
+ There is a clash with Betty, in Bronze Tap
+ There is a clash with Megan, in Bronze Tap
+ There is a clash with Moria, in Bronze Tap
+ There is a clash with Felicity, in Bronze Tap
+ There is a clash with Susan, in Bronze Tap
+ There is a clash with Gwen, in Silver Tap
+ 
+
+Dance Show Programme Generator
+
+Enter the number associated with your chosen menu option.
+1: List all dancers in a dance
+2: List all dance numbers and the respective dancers
+3: Check the feasibility of a given running order
+4: Generate a running order
+5: Exit this application
+
+3
+Checks the feasibility of a given running order...
+Enter the name of the CSV file with the proposed running order:
+NotAFile
+Enter the required number of gaps between dances:
+2
+File cannot be found.
+
+
+Dance Show Programme Generator
+
+Enter the number associated with your chosen menu option.
+1: List all dancers in a dance
+2: List all dance numbers and the respective dancers
+3: Check the feasibility of a given running order
+4: Generate a running order
+5: Exit this application
+
+4
+Generates a running order...
+Enter the required number of gaps between dances:
+2
+The following is a feasible running order for the given dances: 
+
+1: Doe-Re-Mi, performed by: [Agnes, April, Betty, Cathy, Chris, Dora, Felicity, Laura, Lily, Lucia, Megan, Moria, Susan]
+2: What a Feeling, performed by: [Christine, Jenny]
+3: Alice in Disney Land, performed by: [Arwen, Darrell, Florence, Gwen, Ivy, Lauretta, Sally, Vivian]
+4: The Candy Man Can, performed by: [Agnes, Alicia, April, Cathy, Dora, Laura, Lucia]
+5: Singing in the Rain, performed by: [Betty, Chris, Felicity, Lily, Megan, Moria, Susan]
+6: Let's Pretend, performed by: [Abby, Aimee, Carrie, Danielle, June, Mae, May, Mindy, Molly, Sandy]
+7: Thoroughly Modern Milly, performed by: [Ada, Alicia, Christine, Darrell, Jenny, Kathryn, Mavis]
+8: Make 'em Laugh, performed by: [Betty, Felicity, Lily, Megan, Moria, Susan]
+
+
+Dance Show Programme Generator
+
+Enter the number associated with your chosen menu option.
+1: List all dancers in a dance
+2: List all dance numbers and the respective dancers
+3: Check the feasibility of a given running order
+4: Generate a running order
+5: Exit this application
+
+4
+Generates a running order...
+Enter the required number of gaps between dances:
+3
