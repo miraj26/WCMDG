@@ -49,22 +49,19 @@ public class DanceController implements Controller {
 		try {
 			danceGroupsFile.readFileIntoHashMap();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("File cannot be read.");
 		}
 		dancesFile = new Reader("files\\danceShowData_dances.csv");
 		try {
 			dancesFile.readFileIntoHashMap();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("File cannot be read.");
 		}
 		dancesSubsetFile = new Reader("files\\danceShowData_dancesSubset.csv");
 		try {
 			dancesSubsetFile.readFileIntoHashMap();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("File cannot be read.");
 		}
 	}
 
@@ -72,11 +69,15 @@ public class DanceController implements Controller {
 	public String listAllDancersIn(String danceName) {
 		HashMap<String, ArrayList<String>> dances = danceGroupsFile.getDances();
 		ArrayList<String> danceNames = dances.get(danceName);
-		String results = "";
-		for (String dance : danceNames) {
-			results += dance + " ";
+		if (danceNames == null) {
+			return "That group does not exist.";
+		} else {
+			String results = "";
+			for (String dance : danceNames) {
+				results += dance + " ";
+			}
+			return danceName + ": " + results;
 		}
-		return danceName + ": " + results;
 	}
 
 	@Override
@@ -148,8 +149,8 @@ public class DanceController implements Controller {
 		} catch (
 
 		FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("File cannot be found.");
+			successful = false;
 		}
 		if (successful) {
 			return "Running Order is valid.";
@@ -167,8 +168,7 @@ public class DanceController implements Controller {
 		try {
 			dancesSubsetFile.readFileIntoLinkedList();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("File cannot be read.");
 		}
 		HashMap<String, ArrayList<String>> dances = danceGroupsFile.getDances();
 		LinkedList<LinearNode<Performance>> linked = dancesSubsetFile.getLinkedList();
@@ -180,8 +180,12 @@ public class DanceController implements Controller {
 			String feasibility = checkFeasibility(runningOrder, runningOrder.getFirst(), gaps);
 			if (feasibility.equals("") && linked.isEmpty()) {
 				completed = true;
+				int i = 1;
 				for (LinearNode<Performance> performance : runningOrder) {
-					result += performance.getElement().getDanceName() + ", performed by: " + performance.getElement().getDancers() + "\n";
+					Collections.sort(performance.getElement().getDancers());
+					result += i + ": " + performance.getElement().getDanceName() + ", performed by: "
+							+ performance.getElement().getDancers() + "\n";
+					i++;
 				}
 			} else if (feasibility.equals("") && !linked.isEmpty()) {
 				runningOrder = fillList(runningOrder, linked);

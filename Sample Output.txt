@@ -11,8 +11,21 @@ Enter the number associated with your chosen menu option.
 1
 Lists all dancers in a dance...
 Enter the name of the required dance:
-Seniors
-Seniors: Christine Jenny Kathryn Ada Darrell Alicia Mavis 
+Juniors
+Juniors: Lily Betty Megan Moria Felicity Susan 
+
+Dance Show Programme Generator
+
+Enter the number associated with your chosen menu option.
+1: List all dancers in a dance
+2: List all dance numbers and the respective dancers
+3: Check the feasibility of a given running order
+4: Generate a running order
+5: Exit this application
+
+NotAGroup
+Cannot recognise the given command: NotAGroup.
+
 
 Dance Show Programme Generator
 
@@ -77,15 +90,8 @@ Checks the feasibility of a given running order...
 Enter the name of the CSV file with the proposed running order:
 danceShowData_runningOrder.csv
 Enter the required number of gaps between dances:
-4
-There is a clash with Lily, in Doe-Re-Mi
- There is a clash with Betty, in Doe-Re-Mi
- There is a clash with Megan, in Doe-Re-Mi
- There is a clash with Moria, in Doe-Re-Mi
- There is a clash with Felicity, in Doe-Re-Mi
- There is a clash with Susan, in Doe-Re-Mi
- There is a clash with Chris, in Doe-Re-Mi
- There is a clash with Alicia, in Thoroughly Modern Milly
+3
+There is a clash with Alicia, in Thoroughly Modern Milly
  There is a clash with Lucia, in Doe-Re-Mi
  There is a clash with Cathy, in Doe-Re-Mi
  There is a clash with April, in Doe-Re-Mi
@@ -100,12 +106,6 @@ There is a clash with Lily, in Doe-Re-Mi
  There is a clash with Moria, in Make 'em Laugh
  There is a clash with Felicity, in Make 'em Laugh
  There is a clash with Susan, in Make 'em Laugh
- There is a clash with Lucia, in Juvenile Tap
- There is a clash with Cathy, in Juvenile Tap
- There is a clash with April, in Juvenile Tap
- There is a clash with Laura, in Juvenile Tap
- There is a clash with Dora, in Juvenile Tap
- There is a clash with Agnes, in Juvenile Tap
  There is a clash with Lily, in Bronze Tap
  There is a clash with Betty, in Bronze Tap
  There is a clash with Megan, in Bronze Tap
@@ -124,20 +124,13 @@ Enter the number associated with your chosen menu option.
 4: Generate a running order
 5: Exit this application
 
-4
-Generates a running order...
+3
+Checks the feasibility of a given running order...
+Enter the name of the CSV file with the proposed running order:
+NotAFile
 Enter the required number of gaps between dances:
 2
-The following is a feasible running order for the given dances: 
-
-Gold Tap, performed by: [Christine, Jenny, Kathryn, Ada, Darrell, Alicia, Mavis]
-Choo Choo Ch'boogie, performed by: [Lauretta, Florence, Vivian, Ivy, Sally, Gwen, Arwen]
-Jazz Baby, performed by: [Marianne, Dorothy, Audrey, Ginger, Teresa]
-Bronze Tap, performed by: [Lily, Betty, Megan, Moria, Felicity, Susan]
-Silver Tap, performed by: [Lauretta, Florence, Vivian, Ivy, Sally, Gwen, Arwen]
-I Could Have Dance All Night, performed by: [Christine, Alicia, Darrell]
-Chicken Song, performed by: [Lucia, Cathy, April, Laura, Dora, Agnes, Jenny]
-Bye Bye Blackbird, performed by: [Flora, Anne, Lucy, Kate, Gwen, Jane, Mary, Donna, Fiona, Grace, Marianne, Dorothy, Audrey, Ginger, Teresa]
+File cannot be found.
 
 
 Dance Show Programme Generator
@@ -149,5 +142,32 @@ Enter the number associated with your chosen menu option.
 4: Generate a running order
 5: Exit this application
 
-5
-Goodbye!
+4
+Generates a running order...
+Enter the required number of gaps between dances:
+2
+The following is a feasible running order for the given dances: 
+
+1: Doe-Re-Mi, performed by: [Agnes, April, Betty, Cathy, Chris, Dora, Felicity, Laura, Lily, Lucia, Megan, Moria, Susan]
+2: What a Feeling, performed by: [Christine, Jenny]
+3: Alice in Disney Land, performed by: [Arwen, Darrell, Florence, Gwen, Ivy, Lauretta, Sally, Vivian]
+4: The Candy Man Can, performed by: [Agnes, Alicia, April, Cathy, Dora, Laura, Lucia]
+5: Singing in the Rain, performed by: [Betty, Chris, Felicity, Lily, Megan, Moria, Susan]
+6: Let's Pretend, performed by: [Abby, Aimee, Carrie, Danielle, June, Mae, May, Mindy, Molly, Sandy]
+7: Thoroughly Modern Milly, performed by: [Ada, Alicia, Christine, Darrell, Jenny, Kathryn, Mavis]
+8: Make 'em Laugh, performed by: [Betty, Felicity, Lily, Megan, Moria, Susan]
+
+
+Dance Show Programme Generator
+
+Enter the number associated with your chosen menu option.
+1: List all dancers in a dance
+2: List all dance numbers and the respective dancers
+3: Check the feasibility of a given running order
+4: Generate a running order
+5: Exit this application
+
+4
+Generates a running order...
+Enter the required number of gaps between dances:
+3
