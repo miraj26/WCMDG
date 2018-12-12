@@ -33,6 +33,11 @@ public class DanceController implements Controller {
 	 * @see #generateRunningOrder(int)
 	 */
 	private Reader dances;
+	
+	/**
+	 * Holds data referring to a file showing a subset of dances.
+	 */
+	private Reader dancesSubset;
 
 	/**
 	 * Create a <code>DanceController</code> and automatically reads the data from
@@ -49,6 +54,13 @@ public class DanceController implements Controller {
 		dances = new Reader("files\\danceShowData_dances.csv");
 		try {
 			dances.readFileIntoHashMap();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		dancesSubset = new Reader("files\\danceShowData_dancesSubset.csv");
+		try {
+			dancesSubset.readFileIntoHashMap();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -131,15 +143,17 @@ public class DanceController implements Controller {
 		String result = "";
 
 		try {
-			dances.readFileIntoLinkedList();
+			dancesSubset.readFileIntoLinkedList();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		LinkedList<LinearNode<Performance>> linked = dances.getLinkedList();
+		HashMap<String, ArrayList<String>> data = danceGroups.getData();
+		LinkedList<LinearNode<Performance>> linked = dancesSubset.getLinkedList();
+		changeGroupsToNames(linked, data);
 		// LinearNode<Performance> current = linked.get(0);
 		ArrayList<Integer> addedToList = new ArrayList<>();
-		while (runningOrder.size() != linked.size()) {
+		while (runningOrder.size() < linked.size()) {
 			int index = rand.nextInt(linked.size());
 			if (!addedToList.contains(index)) {
 				runningOrder.add(linked.get(index));
@@ -155,7 +169,7 @@ public class DanceController implements Controller {
 
 		while (!completed) {
 			String feasibility = checkFeasibility(runningOrder, runningOrder.getFirst(), gaps);
-			System.out.println(feasibility);
+			// System.out.println(feasibility);
 			if (feasibility.equals("") && linked.isEmpty()) {
 				completed = true;
 				for (LinearNode<Performance> performance : runningOrder) {
@@ -169,7 +183,7 @@ public class DanceController implements Controller {
 				ArrayList<String> clashes = new ArrayList<String>();
 				Scanner scanner = new Scanner(feasibility);
 				while (scanner.hasNextLine()) {
-					System.out.println("TEST");
+					// System.out.println("TEST");
 					String line = scanner.nextLine();
 					String[] newLine = line.replaceAll("There is a clash with ", ",").replaceFirst(" in", "")
 							.split(",");
@@ -179,6 +193,7 @@ public class DanceController implements Controller {
 						}
 					}
 				}
+				System.out.println(clashes);
 				scanner.close();
 				boolean noClashes = false;
 				if (!noClashes) {
@@ -206,7 +221,7 @@ public class DanceController implements Controller {
 					int listSize = runningOrder.size();
 					for (int i = 0; i < listSize; i++) {
 						// THIS LOOP IS FOREVER REPEATED
-						System.out.println("LOOPING FOREVER");
+						// System.out.println("LOOPING FOREVER");
 						if (!added) {
 							runningOrder.add(i, performance);
 
@@ -322,10 +337,11 @@ public class DanceController implements Controller {
 		while (empty.size() != maxSize) {
 			int index = rand.nextInt(full.size());
 			if (!addedToList.contains(index)) {
-				empty.add(full.get(index));
+				empty.addFirst(full.get(index));
 				addedToList.add(index);
 				if (empty.size() > 1) { // Checks if added element is not first in the list
-					empty.get(empty.size() - 2).setNext(full.get(index));
+					// empty.get(empty.size() - 2).setNext(full.get(index));
+					empty.getFirst().setNext(empty.get(1));
 				}
 			}
 			empty.getLast().setNext(null);
