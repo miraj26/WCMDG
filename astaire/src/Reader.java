@@ -98,6 +98,7 @@ public class Reader {
 			for (int i = 0; i < dancerName.length; i++) {
 				// names.add(dancerName[i]);
 				performance.addDancer(dancerName[i].trim());
+				performance.addDancerToHashSet(dancerName[i].trim());
 			}
 			performances.add(performance);
 			LinearNode<Performance> current = new LinearNode<>(performance);

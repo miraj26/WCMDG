@@ -2,6 +2,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.Scanner;
@@ -33,7 +34,7 @@ public class DanceController implements Controller {
 	 * @see #generateRunningOrder(int)
 	 */
 	private Reader dances;
-	
+
 	/**
 	 * Holds data referring to a file showing a subset of dances.
 	 */
@@ -115,9 +116,32 @@ public class DanceController implements Controller {
 			HashMap<String, ArrayList<String>> data = danceGroups.getData();
 			LinkedList<LinearNode<Performance>> linked = runningOrder.getLinkedList();
 			changeGroupsToNames(linked, data);
+
 			LinearNode<Performance> current = linked.get(0);
 
-			clashes = checkFeasibility(linked, current, gaps);
+			boolean listSearched = false;
+			while (!listSearched) {
+				ArrayList<String> dancers = current.getElement().getDancers();
+				LinearNode<Performance> nextInLine = current.getNext();
+				for (int i = 0; i < gaps; i++) {
+					if (linked.indexOf(nextInLine) != -1) { // Checks if nextInLine is null
+						HashSet<String> nextDancers = nextInLine.getElement().getDancerNamesHashSet();
+						for (String dancer : dancers) {
+							if (nextDancers.contains(dancer)) {
+								clashes += "There is a clash with " + dancer + ", in "
+										+ nextInLine.getElement().getDanceName() + "\n ";
+
+							}
+						}
+						nextInLine = nextInLine.getNext();
+					}
+				}
+				if (current.getNext() != null) {
+					current = current.getNext();
+				} else {
+					listSearched = true;
+				}
+			}
 			if (!clashes.equals("")) {
 				successful = false;
 			}
@@ -279,7 +303,20 @@ public class DanceController implements Controller {
 					names.addAll(0, newNames);
 				}
 			}
-			performance.replaceDancerNames(names);
+			performance.replaceDancers(names);
+		}
+		for (LinearNode<Performance> performances : dances) {
+			Performance performance = performances.getElement();
+			HashSet<String> namesHash = performance.getDancerNamesHashSet();
+			String[] names = namesHash.toArray(new String[0]);
+			for (int i = 0; i < names.length; i++) {
+				if (group.containsKey(names[i])) {
+					ArrayList<String> newNames = group.get(names[i]);
+					namesHash.remove(names[i]);
+					namesHash.addAll(newNames);
+				}
+			}
+			performance.replaceDancerNames(namesHash);
 		}
 	}
 

@@ -24,6 +24,7 @@ public class Performance {
 	public Performance(String danceName) {
 		this.danceName = danceName;
 		dancers = new ArrayList<String>();
+		dancerNames = new HashSet<>();
 	}
 	/**
 	 * Gets the name of the dance group.
@@ -50,8 +51,12 @@ public class Performance {
 	 * Replaces {@link #dancers} with dancerNames.
 	 * @param dancerNames <code>ArrayList</code> of type String containing the names of the dancers.
 	 */
-	public void replaceDancerNames(ArrayList<String> dancerNames) {
-		dancers = dancerNames;
+	public void replaceDancers(ArrayList<String> dancers) {
+		this.dancers = dancers;
+	}
+	
+	public void replaceDancerNames(HashSet<String> dancerNames) {
+		this.dancerNames = dancerNames;
 	}
 	
 	public HashSet<String> getDancerNamesHashSet() {
