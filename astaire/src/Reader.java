@@ -126,7 +126,7 @@ public class Reader {
 	 * 
 	 * @return <code>HashMap<String, ArrayList<String>></code> dances.
 	 */
-	public HashMap<String, ArrayList<String>> getData() {
+	public HashMap<String, ArrayList<String>> getDances() {
 		return dances;
 	}
 

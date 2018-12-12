@@ -24,7 +24,7 @@ public class DanceController implements Controller {
 	 * @see #listAllDancesAndPerformers()
 	 * @see #checkFeasibilityOfRunningOrder(String, int)
 	 */
-	private Reader danceGroups;
+	private Reader danceGroupsFile;
 
 	/**
 	 * Holds data referring to a file showing dances.
@@ -33,35 +33,35 @@ public class DanceController implements Controller {
 	 * @see #listAllDancesAndPerformers()
 	 * @see #generateRunningOrder(int)
 	 */
-	private Reader dances;
+	private Reader dancesFile;
 
 	/**
 	 * Holds data referring to a file showing a subset of dances.
 	 */
-	private Reader dancesSubset;
+	private Reader dancesSubsetFile;
 
 	/**
 	 * Create a <code>DanceController</code> and automatically reads the data from
 	 * the required files.
 	 */
 	public DanceController() {
-		danceGroups = new Reader("files\\danceShowData_danceGroups.csv");
+		danceGroupsFile = new Reader("files\\danceShowData_danceGroups.csv");
 		try {
-			danceGroups.readFileIntoHashMap();
+			danceGroupsFile.readFileIntoHashMap();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		dances = new Reader("files\\danceShowData_dances.csv");
+		dancesFile = new Reader("files\\danceShowData_dances.csv");
 		try {
-			dances.readFileIntoHashMap();
+			dancesFile.readFileIntoHashMap();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		dancesSubset = new Reader("files\\danceShowData_dancesSubset.csv");
+		dancesSubsetFile = new Reader("files\\danceShowData_dancesSubset.csv");
 		try {
-			dancesSubset.readFileIntoHashMap();
+			dancesSubsetFile.readFileIntoHashMap();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -70,10 +70,10 @@ public class DanceController implements Controller {
 
 	@Override
 	public String listAllDancersIn(String danceName) {
-		HashMap<String, ArrayList<String>> data = danceGroups.getData();
-		ArrayList<String> dances = data.get(danceName);
+		HashMap<String, ArrayList<String>> dances = danceGroupsFile.getDances();
+		ArrayList<String> danceNames = dances.get(danceName);
 		String results = "";
-		for (String dance : dances) {
+		for (String dance : danceNames) {
 			results += dance + " ";
 		}
 		return danceName + ": " + results;
@@ -82,17 +82,17 @@ public class DanceController implements Controller {
 	@Override
 	public String listAllDancesAndPerformers() {
 		String results = "";
-		HashMap<String, ArrayList<String>> data = danceGroups.getData();
+		HashMap<String, ArrayList<String>> dances = danceGroupsFile.getDances();
 
-		ArrayList<String> keys = dances.getKeyList();
-		ArrayList<ArrayList<String>> danceNames = dances.getValueList();
+		ArrayList<String> keys = dancesFile.getKeyList();
+		ArrayList<ArrayList<String>> danceNames = dancesFile.getValueList();
 		Collections.sort(keys);
 
 		for (int i = 1; i < danceNames.size(); i++) {
 			ArrayList<String> performerNames = danceNames.get(i);
 			for (int j = 0; j < performerNames.size(); j++) {
-				if (data.containsKey(performerNames.get(j))) {
-					ArrayList<String> names = data.get(performerNames.get(j));
+				if (dances.containsKey(performerNames.get(j))) {
+					ArrayList<String> names = dances.get(performerNames.get(j));
 					performerNames.remove(j);
 					performerNames.addAll(0, names);
 				}
@@ -112,9 +112,9 @@ public class DanceController implements Controller {
 		try {
 
 			runningOrder.readFileIntoLinkedList();
-			HashMap<String, ArrayList<String>> data = danceGroups.getData();
+			HashMap<String, ArrayList<String>> dances = danceGroupsFile.getDances();
 			LinkedList<LinearNode<Performance>> linked = runningOrder.getLinkedList();
-			changeGroupsToNames(linked, data);
+			changeGroupsToNames(linked, dances);
 
 			LinearNode<Performance> current = linked.get(0);
 
@@ -165,14 +165,14 @@ public class DanceController implements Controller {
 		String result = "The following is a feasible running order for the given dances: \n\n";
 
 		try {
-			dancesSubset.readFileIntoLinkedList();
+			dancesSubsetFile.readFileIntoLinkedList();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		HashMap<String, ArrayList<String>> data = danceGroups.getData();
-		LinkedList<LinearNode<Performance>> linked = dancesSubset.getLinkedList();
-		changeGroupsToNames(linked, data);
+		HashMap<String, ArrayList<String>> dances = danceGroupsFile.getDances();
+		LinkedList<LinearNode<Performance>> linked = dancesSubsetFile.getLinkedList();
+		changeGroupsToNames(linked, dances);
 		fillList(runningOrder, linked);
 		linked.clear();
 
@@ -340,9 +340,13 @@ public class DanceController implements Controller {
 
 	/**
 	 * Elements from "full" are added one by one to the start of "empty".
-	 * @param empty a <code>LinkedList</code> of LinearNode of type Performance, where the data from full is to be added.
-	 * @param full a <code>LinkedList</code> of LinearNode of type Performance, containing data to be put into the empty list.
-	 * @return <code>LinkedList</code> containing a concatenation of elements from both LinkedLists.
+	 * 
+	 * @param empty a <code>LinkedList</code> of LinearNode of type Performance,
+	 *              where the data from full is to be added.
+	 * @param full  a <code>LinkedList</code> of LinearNode of type Performance,
+	 *              containing data to be put into the empty list.
+	 * @return <code>LinkedList</code> containing a concatenation of elements from
+	 *         both LinkedLists.
 	 */
 	private LinkedList<LinearNode<Performance>> fillList(LinkedList<LinearNode<Performance>> empty,
 			LinkedList<LinearNode<Performance>> full) {
