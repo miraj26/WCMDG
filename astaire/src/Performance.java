@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashSet;
 /**
  * This class stores the information about each performance,
  * storing the names of each dancer into an ArrayList.
@@ -17,6 +18,8 @@ public class Performance {
 	 * ArrayList of type String which holds the names of the each dancer. 
 	 */
 	private ArrayList<String> dancers;
+	
+	private HashSet<String> dancerNames;
 	
 	public Performance(String danceName) {
 		this.danceName = danceName;
@@ -50,5 +53,13 @@ public class Performance {
 	public void replaceDancerNames(ArrayList<String> dancerNames) {
 		dancers = dancerNames;
 	}
+	
+	public HashSet<String> getDancerNamesHashSet() {
+		return dancerNames;
+	}
+	
 
+	public void addDancerToHashSet(String dancerName) {
+		dancerNames.add(dancerName);
+	}
 }
